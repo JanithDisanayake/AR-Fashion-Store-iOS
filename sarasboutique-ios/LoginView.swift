@@ -38,8 +38,14 @@ struct LoginView: View {
                     .cornerRadius(30)
                 HStack {
                     Text("Don't Have a Account")
-                    Text("Sign Up")
-                        .foregroundStyle(.blue)
+                    NavigationLink(
+                        destination:
+                            SignUpView()
+                            .navigationBarBackButtonHidden(true)
+                    ) {
+                        Text("Sign Up")
+                            .foregroundStyle(.blue)
+                    }
                     
                 }
             }
