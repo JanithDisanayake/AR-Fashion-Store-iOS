@@ -9,7 +9,21 @@ import SwiftUI
 
 struct MainView: View {
     var body: some View {
-        Text("Main page")
+        TabView {
+            Tab("Home", systemImage: "house") {
+            }
+//            .badge(2)
+
+            Tab("Saved", systemImage: "bookmark") {
+            }
+            
+            Tab("Cart", systemImage: "basket") {
+            }
+
+            Tab("Account", systemImage: "person.crop.circle.fill") {
+            }
+//            .badge("!")
+        }
     }
 }
 
