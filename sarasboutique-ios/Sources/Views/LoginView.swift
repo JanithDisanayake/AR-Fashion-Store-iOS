@@ -10,8 +10,11 @@ import SwiftUI
 struct LoginView: View {
     @State private var email = ""
     @State private var password = ""
+    @State private var isLoggedIn = false
+    @State private var path = NavigationPath()
+    
     var body: some View {
-        NavigationView {
+        NavigationStack(path: $path) {
             VStack {
                 Text("Welcome Back !")
                     .font(.title)
@@ -39,11 +42,10 @@ struct LoginView: View {
                     .frame(maxWidth: .infinity, alignment: .trailing)
                 Spacer()
                     .frame(height:30)
-                NavigationLink(
-                    destination:
-                        MainView()
-                        .navigationBarBackButtonHidden(true)
-                ) {
+                
+                Button(action: {
+                    login(email: email, password: password)
+                }) {
                     Text("Login")
                         .font(.system(size: 24, weight: .bold, design: .default))
                         .frame(maxWidth: .infinity, maxHeight: 60)
@@ -135,6 +137,20 @@ struct LoginView: View {
                 }
             }
             .padding(.horizontal, 40)
+            .navigationDestination(for: String.self) { destination in
+                if destination == "MainView" {
+                    MainView()
+                        .navigationBarBackButtonHidden()
+                }
+            }
+        }
+    }
+    
+    func login(email: String, password: String) {
+        if email == "Admin" && password == "password" {
+            path.append("MainView") 
+        } else {
+            print("Invalid credentials")
         }
     }
 }
