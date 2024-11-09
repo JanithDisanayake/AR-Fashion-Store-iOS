@@ -6,12 +6,16 @@
 //
 
 import SwiftUI
+import Firebase
+import FirebaseAuth
 
 struct LoginView: View {
     @State private var email = ""
     @State private var password = ""
     @State private var isLoggedIn = false
     @State private var path = NavigationPath()
+    @State var isAuthenticated = false
+    @State var errorMessage: String?
     
     var body: some View {
         NavigationStack(path: $path) {
@@ -147,10 +151,12 @@ struct LoginView: View {
     }
     
     func login(email: String, password: String) {
-        if email == "Admin" && password == "password" {
-            path.append("MainView") 
-        } else {
-            print("Invalid credentials")
+        Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
+            if let error = error {
+                print(error)
+            } else {
+                path.append("MainView")
+            }
         }
     }
 }
