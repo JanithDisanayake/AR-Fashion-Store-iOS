@@ -12,6 +12,8 @@ struct LoginView: View {
     @State private var password = ""
     @State private var isLoggedIn = false
     @State private var path = NavigationPath()
+    @StateObject private var authViewModel = AuthenticationViewModel()
+
     
     var body: some View {
         NavigationStack(path: $path) {
@@ -148,7 +150,10 @@ struct LoginView: View {
     
     func login(email: String, password: String) {
         if email == "Admin" && password == "password" {
-            path.append("MainView") 
+            authViewModel.authenticateWithFaceID()
+            if authViewModel.isAuthenticated {
+                path.append("MainView")
+            }
         } else {
             print("Invalid credentials")
         }
