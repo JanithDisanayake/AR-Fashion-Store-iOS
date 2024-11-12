@@ -18,7 +18,7 @@ struct SignUpView: View {
     @State private var path = NavigationPath()
     
     var body: some View {
-        NavigationView {
+        NavigationStack(path: $path) {
             VStack {
                 Text("Welcome to Saras Boutique!")
                     .font(.title)
@@ -75,6 +75,12 @@ struct SignUpView: View {
                 }
             }
             .padding(30)
+            .navigationDestination(for: String.self) { destination in
+                if destination == "LoginView" {
+                    LoginView()
+                        .navigationBarBackButtonHidden()
+                }
+            }
         }
     }
     
@@ -85,6 +91,7 @@ struct SignUpView: View {
             } else {
                 path.append("LoginView")
             }
+            
         }
     }
 }
