@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import Firebase
+import FirebaseAuth
 
 struct SignUpView: View {
     @State private var first_name = ""
@@ -13,6 +15,8 @@ struct SignUpView: View {
     @State private var email = ""
     @State private var password = ""
     @State private var confirmPassword = ""
+    @State private var path = NavigationPath()
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -48,12 +52,16 @@ struct SignUpView: View {
                     .shadow(radius: 5)
                     .cornerRadius(10.0)
                 Spacer()
-                Text("Sign Up")
-                    .font(.system(size: 24, weight: .bold, design: .default))
-                    .frame(maxWidth: .infinity, maxHeight: 60)
-                    .foregroundColor(Color.white)
-                    .background(Color.blue)
-                    .cornerRadius(30)
+                Button(action: {
+                    signUp(email: email, password: password)
+                }) {
+                    Text("Sign Up")
+                        .font(.system(size: 24, weight: .bold, design: .default))
+                        .frame(maxWidth: .infinity, maxHeight: 60)
+                        .foregroundColor(Color.white)
+                        .background(Color.blue)
+                        .cornerRadius(30)
+                }
                 HStack {
                     Text("Already Have a Account")
                     NavigationLink(
@@ -67,6 +75,16 @@ struct SignUpView: View {
                 }
             }
             .padding(30)
+        }
+    }
+    
+    func signUp(email: String, password: String) {
+        Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+            if let error = error {
+                print(error)
+            } else {
+                path.append("LoginView")
+            }
         }
     }
 }
