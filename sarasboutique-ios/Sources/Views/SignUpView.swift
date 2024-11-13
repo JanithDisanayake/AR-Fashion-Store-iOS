@@ -8,15 +8,19 @@
 import SwiftUI
 import Firebase
 import FirebaseAuth
+import FirebaseFirestore
+import FirebaseDatabaseInternal
 
 struct SignUpView: View {
-    @State private var first_name = ""
-    @State private var last_name = ""
+    @State private var firstName = ""
+    @State private var lastName = ""
     @State private var email = ""
     @State private var password = ""
     @State private var confirmPassword = ""
     @State private var path = NavigationPath()
     
+    var ref: DatabaseReference = Database.database().reference()
+
     var body: some View {
         NavigationStack(path: $path) {
             VStack {
@@ -26,12 +30,12 @@ struct SignUpView: View {
                     .fontWeight(.bold)
                     .multilineTextAlignment(.center)
                 Spacer()
-                TextField("First Name", text: self.$first_name)
+                TextField("First Name", text: self.$firstName)
                     .padding()
                     .background(.ultraThinMaterial)
                     .shadow(radius: 5)
                     .cornerRadius(10)
-                TextField("Last Name", text: self.$last_name)
+                TextField("Last Name", text: self.$lastName)
                     .padding()
                     .background(.ultraThinMaterial)
                     .shadow(radius: 5)
@@ -53,7 +57,7 @@ struct SignUpView: View {
                     .cornerRadius(10.0)
                 Spacer()
                 Button(action: {
-                    signUp(email: email, password: password)
+                    signUp()
                 }) {
                     Text("Sign Up")
                         .font(.system(size: 24, weight: .bold, design: .default))
@@ -84,13 +88,32 @@ struct SignUpView: View {
         }
     }
     
-    func signUp(email: String, password: String) {
+    func signUp() {
+        
         Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+            
+            let db = Firestore.firestore()
+            
             if let error = error {
                 print(error)
+                
             } else {
-                path.append("LoginView")
+                db.collection("users").document().setData([
+                    "firstName": firstName,
+                    "lastName": lastName,
+                    "email": email
+                ]) {  error in
+                    if let error = error {
+                        print("Error writing document: \(error)")
+                        
+                    } else {
+                        print("Document successfully written!")
+                        path.append("LoginView")
+                        
+                    }
+                }
             }
+            
             
         }
     }
