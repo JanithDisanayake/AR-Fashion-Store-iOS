@@ -139,24 +139,24 @@ struct CartView: View {
                     }
                 }
                 
-                // Static Button
+                // Static Button below the ScrollView
                 Button(action: {
                     print("Button tapped")
                 }) {
+                    
                     Text("Checkout")
                         .font(Font.custom("Poppins", size: 20).weight(.bold))
                         .foregroundColor(.white)
                         .padding()
+                        .frame(maxWidth: .infinity)
                         .background(Color.blue)
-                        .cornerRadius(30)
+                        .cornerRadius(60)
+                        .padding([.horizontal, .bottom])
                 }
-                .frame(maxWidth: .infinity, maxHeight: 100)
-                .padding([.horizontal, .bottom])
                 .shadow(radius: 5)
-                
+                .frame(height: 100)
             }
             .navigationTitle("Cart")
-            .padding(10)
         }
     }
 }
