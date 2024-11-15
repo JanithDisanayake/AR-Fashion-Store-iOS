@@ -48,7 +48,7 @@ struct LoginView: View {
                 }) {
                     Text("Login")
                         .font(.system(size: 24, weight: .bold, design: .default))
-                        .frame(maxWidth: .infinity, maxHeight: 60)
+                        .frame(maxWidth: .infinity, minHeight: 60, maxHeight: 60)
                         .foregroundColor(Color.white)
                         .background(Color.blue)
                         .cornerRadius(30)
@@ -76,7 +76,7 @@ struct LoginView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.leading, 20)
                     }
-                    .frame(maxHeight: 50)
+                    .frame(minHeight: 50, maxHeight: 50)
                 }
                 NavigationLink(
                     destination:
@@ -99,7 +99,7 @@ struct LoginView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.leading, 20)
                     }
-                    .frame(maxHeight: 50)
+                    .frame(minHeight: 50, maxHeight: 50)
                 }
                 NavigationLink(
                     destination:
@@ -122,7 +122,7 @@ struct LoginView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.leading, 20)
                     }
-                    .frame(maxHeight: 50)
+                    .frame(minHeight: 50, maxHeight: 50)
                 }
                 HStack {
                     Text("Don't Have a Account")

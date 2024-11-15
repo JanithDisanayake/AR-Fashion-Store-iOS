@@ -11,22 +11,22 @@ struct ProfileView: View {
     var body: some View {
         ZStack() {
           Group {
-            ZStack() {
-              Rectangle()
-                .foregroundColor(.clear)
-                .frame(width: 440, height: 80)
-                .background(.white)
-                .cornerRadius(33.50)
-                .offset(x: 0, y: 0)
-                .shadow(
-                  color: Color(red: 0, green: 0, blue: 0, opacity: 0.10), radius: 40, y: 4
-                )
-            }
-            .frame(width: 440, height: 80)
-            .offset(x: 0, y: 438)
-            .shadow(
-              color: Color(red: 0, green: 0, blue: 0, opacity: 0.25), radius: 4, y: 4
-            )
+//            ZStack() {
+//              Rectangle()
+//                .foregroundColor(.clear)
+//                .frame(width: 440, height: 80)
+//                .background(.white)
+//                .cornerRadius(33.50)
+//                .offset(x: 0, y: 0)
+//                .shadow(
+//                  color: Color(red: 0, green: 0, blue: 0, opacity: 0.10), radius: 40, y: 4
+//                )
+//            }
+//            .frame(width: 440, height: 80)
+//            .offset(x: 0, y: 438)
+//            .shadow(
+//              color: Color(red: 0, green: 0, blue: 0, opacity: 0.25), radius: 4, y: 4
+//            )
             ZStack() {
               Rectangle()
                 .foregroundColor(.clear)
@@ -95,155 +95,56 @@ struct ProfileView: View {
             .frame(width: 440, height: 856)
             .background(.white)
             .offset(x: 0, y: -50)
-            ZStack() {
-              Text("Name")
-                .font(Font.custom("Outfit", size: 14).weight(.light))
-                .foregroundColor(Color(red: 0.12, green: 0.12, blue: 0.12).opacity(0.70))
-                .offset(x: -117, y: -34.50)
-              Text("Sid Diyago")
-                .font(Font.custom("Outfit", size: 14).weight(.medium))
-                .foregroundColor(Color(red: 0.13, green: 0.13, blue: 0.13).opacity(0.90))
-                .offset(x: 47.50, y: -35.50)
-              Text("Email")
-                .font(Font.custom("Outfit", size: 14).weight(.light))
-                .foregroundColor(Color(red: 0.12, green: 0.12, blue: 0.12).opacity(0.70))
-                .offset(x: -127, y: 2)
-              Text("siddxd@growthx.com")
-                .font(Font.custom("Outfit", size: 14).weight(.medium))
-                .foregroundColor(Color(red: 0.13, green: 0.13, blue: 0.13).opacity(0.90))
-                .offset(x: 47.50, y: -1)
-              Text("Phone ")
-                .font(Font.custom("Outfit", size: 14).weight(.light))
-                .foregroundColor(Color(red: 0.12, green: 0.12, blue: 0.12).opacity(0.70))
-                .offset(x: -79.50, y: 33.50)
-              Text("+91 49652845732")
-                .font(Font.custom("Outfit", size: 14).weight(.medium))
-                .foregroundColor(Color(red: 0.13, green: 0.13, blue: 0.13).opacity(0.90))
-                .offset(x: 48.50, y: 33.50)
-            }
-            .frame(width: 373, height: 122)
-            .cornerRadius(10)
-            .overlay(
-              RoundedRectangle(cornerRadius: 10)
-                .inset(by: 0.29)
-                .stroke(
-                  Color(red: 0, green: 0, blue: 0).opacity(0.15), lineWidth: 0.29
-                )
-            )
-            .offset(x: -0.50, y: 9)
-            .shadow(
-              color: Color(red: 0, green: 0, blue: 0, opacity: 0.10), radius: 1.16, y: 1.16
-            )
-            ZStack() {
-              Text("XXXX XXXX XXXXX XXXXX 1234")
-                .font(Font.custom("Outfit", size: 14).weight(.medium))
-                .foregroundColor(Color(red: 0.13, green: 0.13, blue: 0.13).opacity(0.90))
-                .offset(x: 47.50, y: -18)
-              Text("EXP")
-                .font(Font.custom("Outfit", size: 14).weight(.light))
-                .foregroundColor(Color(red: 0.12, green: 0.12, blue: 0.12).opacity(0.70))
-                .offset(x: -33, y: 17.50)
-              Text("CVC")
-                .font(Font.custom("Outfit", size: 14).weight(.light))
-                .foregroundColor(Color(red: 0.12, green: 0.12, blue: 0.12).opacity(0.70))
-                .offset(x: 101, y: 15.50)
-              Text("12/25")
-                .font(Font.custom("Outfit", size: 14).weight(.medium))
-                .foregroundColor(Color(red: 0.13, green: 0.13, blue: 0.13).opacity(0.90))
-                .offset(x: 2, y: 17.50)
-              Text("001")
-                .font(Font.custom("Outfit", size: 14).weight(.medium))
-                .foregroundColor(Color(red: 0.13, green: 0.13, blue: 0.13).opacity(0.90))
-                .offset(x: 109, y: 16)
-              Rectangle()
-                .foregroundColor(.clear)
-                .frame(width: 76, height: 61)
-                .background(
-                  AsyncImage(url: URL(string: "https://via.placeholder.com/76x61"))
-                )
-                .offset(x: -132.50, y: 0)
-              Rectangle()
-                .foregroundColor(.clear)
-                .frame(width: 20, height: 19)
-                .background(
-                  AsyncImage(url: URL(string: "https://via.placeholder.com/20x19"))
-                )
-                .offset(x: -112.50, y: 16)
-            }
-            .frame(width: 373, height: 87)
-            .cornerRadius(10)
-            .overlay(
-              RoundedRectangle(cornerRadius: 10)
-                .inset(by: 0.29)
-                .stroke(
-                  Color(red: 0, green: 0, blue: 0).opacity(0.15), lineWidth: 0.29
-                )
-            )
-            .offset(x: -0.50, y: 184.50)
-            .shadow(
-              color: Color(red: 0, green: 0, blue: 0, opacity: 0.10), radius: 1.16, y: 1.16
-            )
-            ZStack() {
-              Text("XXXX XXXX XXXXX XXXXX 4321")
-                .font(Font.custom("Outfit", size: 14).weight(.medium))
-                .foregroundColor(Color(red: 0.13, green: 0.13, blue: 0.13).opacity(0.90))
-                .offset(x: 47.50, y: -18)
-              Text("EXP")
-                .font(Font.custom("Outfit", size: 14).weight(.light))
-                .foregroundColor(Color(red: 0.12, green: 0.12, blue: 0.12).opacity(0.70))
-                .offset(x: -33, y: 17.50)
-              Text("CVC")
-                .font(Font.custom("Outfit", size: 14).weight(.light))
-                .foregroundColor(Color(red: 0.12, green: 0.12, blue: 0.12).opacity(0.70))
-                .offset(x: 101, y: 15.50)
-              Text("03/29")
-                .font(Font.custom("Outfit", size: 14).weight(.medium))
-                .foregroundColor(Color(red: 0.13, green: 0.13, blue: 0.13).opacity(0.90))
-                .offset(x: 2, y: 17.50)
-              Text("023")
-                .font(Font.custom("Outfit", size: 14).weight(.medium))
-                .foregroundColor(Color(red: 0.13, green: 0.13, blue: 0.13).opacity(0.90))
-                .offset(x: 109, y: 16)
-              Rectangle()
-                .foregroundColor(.clear)
-                .frame(width: 76, height: 61)
-                .background(
-                  AsyncImage(url: URL(string: "https://via.placeholder.com/76x61"))
-                )
-                .offset(x: -132.50, y: 0)
-              Rectangle()
-                .foregroundColor(.clear)
-                .frame(width: 20, height: 16)
-                .background(
-                  AsyncImage(url: URL(string: "https://via.placeholder.com/20x16"))
-                )
-                .offset(x: -112.50, y: 14.50)
-            }
-            .frame(width: 373, height: 87)
-            .cornerRadius(10)
-            .overlay(
-              RoundedRectangle(cornerRadius: 10)
-                .inset(by: 0.29)
-                .stroke(
-                  Color(red: 0, green: 0, blue: 0).opacity(0.15), lineWidth: 0.29
-                )
-            )
-            .offset(x: 6.50, y: 282.50)
-            .shadow(
-              color: Color(red: 0, green: 0, blue: 0, opacity: 0.10), radius: 1.16, y: 1.16
-            )
-            Text("Personal Informations")
-              .font(Font.custom("Outfit", size: 14).weight(.medium))
-              .foregroundColor(Color(red: 0.13, green: 0.13, blue: 0.13).opacity(0.90))
-              .offset(x: -78, y: -70.50)
+              
+              Text("sidiyago")
+                .font(Font.custom("Outfit", size: 20).weight(.medium))
+                .foregroundColor(Color(red: 1, green: 1, blue: 1).opacity(0.90))
+                .offset(x: -0.50, y: -370)
+              VStack {
+                  Text("Personal Informations")
+                    .font(Font.custom("Outfit", size: 14).weight(.medium))
+                  // Row 1
+                  HStack {
+                      Text("Name")
+                          .fontWeight(.bold)
+                          .frame(maxWidth: 100, alignment: .leading)
+                          .padding()
+
+                      Text("Sid Diyago")
+                          .frame(maxWidth: .infinity, alignment: .leading)
+                          .padding()
+                          .cornerRadius(8)
+                  }
+
+                  // Row 2
+                  HStack {
+                      Text("Email")
+                          .fontWeight(.bold)
+                          .frame(maxWidth: 100, alignment: .leading)
+                          .padding()
+
+                      Text("siddxd@growthx.com")
+                          .frame(maxWidth: .infinity, alignment: .leading)
+                          .padding()
+                          .cornerRadius(8)
+                  }
+                  
+                  // Empty Row (Spacer)
+//                  Spacer().frame(height: 40)
+
+              }
+              .padding()
+              .offset(x: -0.50, y: 20)
+              .frame(width: 400, height: 10)
+
+            
+            
+            
             Text("Payment Information")
               .font(Font.custom("Outfit", size: 14).weight(.medium))
               .foregroundColor(Color(red: 0.13, green: 0.13, blue: 0.13).opacity(0.90))
               .offset(x: -78, y: 122.50)
-            Text("sidiyago")
-              .font(Font.custom("Outfit", size: 20).weight(.medium))
-              .foregroundColor(Color(red: 1, green: 1, blue: 1).opacity(0.90))
-              .offset(x: -0.50, y: -370)
+            
             Rectangle()
               .foregroundColor(.clear)
               .frame(width: 40, height: 40)
