@@ -18,6 +18,7 @@ struct SignUpView: View {
     @State private var password = ""
     @State private var confirmPassword = ""
     @State private var path = NavigationPath()
+    private let userController = UserController()
     
     var ref: DatabaseReference = Database.database().reference()
 
@@ -98,22 +99,22 @@ struct SignUpView: View {
                 print(error)
                 
             } else {
-                let userId = db.collection("users").document().documentID
-                db.collection("users").document().setData([
-                    "userId": userId,
-                    "firstName": firstName,
-                    "lastName": lastName,
-                    "email": email
-                ]) {  error in
-                    if let error = error {
-                        print("Error writing document: \(error)")
-                        
-                    } else {
-                        print("Document successfully written!")
-                        path.append("LoginView")
-                        
+                // Create User object
+                var user = User(userId: "", firstName: firstName, lastName: lastName, email: email)
+                
+                // Call the register function with the User object
+                userController.register(user: user) { result in
+                    DispatchQueue.main.async {
+                        switch result {
+                        case .success:
+                            print("User successfully registered")
+                            path.append("LoginView")
+                        case .failure(let error):
+                            print("Error registering user: \(error.localizedDescription)")
+                        }
                     }
                 }
+                
             }
             
             
