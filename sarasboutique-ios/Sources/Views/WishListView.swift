@@ -1,13 +1,14 @@
+//
+//  WishListView.swift
+//  sarasboutique-ios
+//
+//  Created by Janith Personal on 2024-11-04.
+//
+
 import SwiftUI
 
-struct Item: Identifiable {
-    let id = UUID()
-    let name: String
-    let description: String
-    let imageName: String
-}
-
-struct HomeView: View {
+struct WishListView: View {
+    
     let items: [Item] = [
         Item(name: "Item 1", description: "Description for item 1", imageName: "photo1"),
         Item(name: "Item 2", description: "Description for item 2", imageName: "photo2"),
@@ -44,42 +45,11 @@ struct HomeView: View {
                 .padding()
                 .padding(.horizontal, 50)
             }
-            .navigationTitle("Home")
-            
+            .navigationTitle("Wish List")
         }
-    }
-}
-
-struct CardView: View {
-    let item: Item
-    
-    var body: some View {
-        VStack(alignment: .leading) {
-            Image(item.imageName)
-                .resizable()
-                .scaledToFill()
-                .frame(height: 200)
-                .clipped()
-                .cornerRadius(10)
-            
-            VStack(alignment: .leading, spacing: 8) {
-                Text(item.name)
-                    .font(.title2)
-                    .fontWeight(.bold)
-                
-                Text(item.description)
-                    .font(.body)
-                    .foregroundColor(.secondary)
-            }
-            .padding()
-        }
-        .background(Color.white)
-        .cornerRadius(10)
-        .shadow(color: Color.gray.opacity(0.3), radius: 5, x: 0, y: 5)
-        .frame(width: (UIScreen.main.bounds.width - 60) / 2) // Make each card take half the screen width minus padding
     }
 }
 
 #Preview {
-    HomeView()
+    WishListView()
 }
