@@ -8,6 +8,12 @@ struct Item: Identifiable {
 }
 
 struct HomeView: View {
+    @State private var products: [Product] = []
+    @State private var isLoading: Bool = false
+    @State private var errorMessage: String?
+    
+    private let productController = ProductController()
+    
     let items: [Item] = [
         Item(name: "Item 1", description: "Description for item 1", imageName: "photo1"),
         Item(name: "Item 2", description: "Description for item 2", imageName: "photo2"),
@@ -21,20 +27,15 @@ struct HomeView: View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 10) {
-                    // Create two cards per row with spacing
                     ForEach(0..<items.count / 2, id: \.self) { index in
-                        HStack(spacing: 25) { // Add spacing between cards in the row
-                            // First Card
+                        HStack(spacing: 25) {
                             CardView(item: items[index * 2])
-                            
-                            // Second Card (Check if there's a second item in the pair)
                             if (index * 2 + 1) < items.count {
                                 CardView(item: items[index * 2 + 1])
                             }
                         }
                     }
                     
-                    // Handle remaining item if there is an odd number of items
                     if items.count % 2 != 0 {
                         HStack {
                             CardView(item: items.last!)
@@ -43,10 +44,25 @@ struct HomeView: View {
                 }
                 .padding()
                 .padding(.horizontal, 50)
+                .task {
+                    await fetchProducts()
+                }
             }
             .navigationTitle("Home")
             
         }
+    }
+    
+    private func fetchProducts() async {
+        print("Fetching")
+        
+        do {
+            products = try await productController.fetchAllProducts()
+            print("Fetched Products:", products)
+        } catch {
+            print("Error fetching products:", error)
+        }
+        
     }
 }
 
