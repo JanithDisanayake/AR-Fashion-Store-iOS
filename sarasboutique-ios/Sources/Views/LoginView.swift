@@ -16,6 +16,8 @@ struct LoginView: View {
     @State private var path = NavigationPath()
     @State var isAuthenticated = false
     @State var errorMessage: String?
+    @StateObject private var authViewModel = AuthenticationViewModel()
+
     
     var body: some View {
         NavigationStack(path: $path) {
@@ -155,7 +157,12 @@ struct LoginView: View {
             if let error = error {
                 print(error)
             } else {
-                path.append("MainView")
+                authViewModel.authenticateWithFaceID()
+                if authViewModel.isAuthenticated {
+                    path.append("MainView")
+                } else {
+                    print("Authentication failed")
+                }
             }
         }
     }
