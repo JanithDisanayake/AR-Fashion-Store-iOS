@@ -98,7 +98,9 @@ struct SignUpView: View {
                 print(error)
                 
             } else {
+                let userId = db.collection("users").document().documentID
                 db.collection("users").document().setData([
+                    "userId": userId,
                     "firstName": firstName,
                     "lastName": lastName,
                     "email": email
