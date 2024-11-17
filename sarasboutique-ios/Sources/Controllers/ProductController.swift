@@ -15,7 +15,7 @@ class ProductController {
     
     // Fetch all products from Firestore
     func fetchAllProducts() async throws -> [Product] {
-        var products: [Product] = [] 
+        var products: [Product] = []
         
         do {
             let querySnapshot = try await db.collection("products").getDocuments()

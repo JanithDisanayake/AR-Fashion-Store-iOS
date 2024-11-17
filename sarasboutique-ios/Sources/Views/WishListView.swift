@@ -26,11 +26,11 @@ struct WishListView: View {
                     ForEach(0..<items.count / 2, id: \.self) { index in
                         HStack(spacing: 25) { // Add spacing between cards in the row
                             // First Card
-                            CardView(item: items[index * 2])
+                            CardView2(item: items[index * 2])
                             
                             // Second Card (Check if there's a second item in the pair)
                             if (index * 2 + 1) < items.count {
-                                CardView(item: items[index * 2 + 1])
+                                CardView2(item: items[index * 2 + 1])
                             }
                         }
                     }
@@ -38,7 +38,7 @@ struct WishListView: View {
                     // Handle remaining item if there is an odd number of items
                     if items.count % 2 != 0 {
                         HStack {
-                            CardView(item: items.last!)
+                            CardView2(item: items.last!)
                         }
                     }
                 }
@@ -47,6 +47,37 @@ struct WishListView: View {
             }
             .navigationTitle("Wish List")
         }
+    }
+}
+
+
+struct CardView2: View {
+    let item: Item
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            Image(item.imageName)
+                .resizable()
+                .scaledToFill()
+                .frame(height: 200)
+                .clipped()
+                .cornerRadius(10)
+            
+            VStack(alignment: .leading, spacing: 8) {
+                Text(item.name)
+                    .font(.title2)
+                    .fontWeight(.bold)
+                
+                Text(item.description)
+                    .font(.body)
+                    .foregroundColor(.secondary)
+            }
+            .padding()
+        }
+        .background(Color.white)
+        .cornerRadius(10)
+        .shadow(color: Color.gray.opacity(0.3), radius: 5, x: 0, y: 5)
+        .frame(width: (UIScreen.main.bounds.width - 60) / 2) // Make each card take half the screen width minus padding
     }
 }
 
