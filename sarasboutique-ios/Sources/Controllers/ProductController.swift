@@ -52,7 +52,6 @@ class ProductController {
                     print("Error: Missing or invalid data in document \(document.documentID)")
                 }
             }
-            
             return products
             
         } catch {
@@ -62,21 +61,43 @@ class ProductController {
     }
     
     
-    
-    func fetchProductbyId(byId productId: String, completion: @escaping (Result<Product, Error>) -> Void) {
-        db.collection(collection).document(productId).getDocument { (document, error) in
-            if let document = document, document.exists {
-                do {
-                    let product = try document.data(as: Product.self)
-                    completion(.success(product))
-                } catch {
-                    completion(.failure(error))
-                }
-            } else if let error = error {
-                completion(.failure(error))
+    func fetchProductbyId(id: String) async throws -> Product {
+        do {
+            let data = try await db.collection("products").document(id).getDocument()
+            if let productId = data["productId"] as? String,
+               let name = data["name"] as? String,
+               let description = data["description"] as? String,
+               let category = data["category"] as? String,
+               let price = data["price"] as? Int,
+               let stockQuantity = data["stockQuantity"] as? Int,
+               let size = data["size"] as? [String],
+               let color = data["color"] as? [String],
+               let material = data["material"] as? String,
+               let imageUrls = data["imageUrls"] as? [String],
+               let objectUrl = data["objectUrl"] as? String {
+                
+                let product = Product(
+                    productId: productId,
+                    name: name,
+                    description: description,
+                    category: category,
+                    price: price,
+                    stockQuantity: stockQuantity,
+                    size: size,
+                    color: color,
+                    material: material,
+                    imageUrls: imageUrls,
+                    objectUrl: objectUrl
+                )
+                return product
+                
             } else {
-                completion(.failure(NSError(domain: "Firestore", code: 404, userInfo: [NSLocalizedDescriptionKey: "Product not found"])))
+                print("Error: Missing or invalid data in document \(id)")
             }
+        } catch {
+            print("Error getting document: \(error)")
+            throw error // Rethrow the error for further handling
         }
+        return Product.sample
     }
 }

@@ -9,6 +9,8 @@ import SwiftUI
 
 struct CardView: View {
     let item: Product
+    
+    private let productController = ProductController()
 
     var body: some View {
         
@@ -35,7 +37,20 @@ struct CardView: View {
         .cornerRadius(10)
         .shadow(color: Color.gray.opacity(0.3), radius: 5, x: 0, y: 5)
         .frame(width: (UIScreen.main.bounds.width - 60) / 2)
+        .onTapGesture {
+            Task {
+                if let productId = item.productId, !productId.isEmpty {
+                    do {
+                        let product = try await productController.fetchProductbyId(id: productId)
+                        print("Fetched product: \(product)")
+                    } catch {
+                        print("Error fetching product: \(error)")
+                    }
+                }
+            }
+        }
     }
+        
 }
 
 #Preview {
