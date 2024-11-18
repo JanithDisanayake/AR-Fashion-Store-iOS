@@ -103,7 +103,17 @@ struct LoginView: View {
                 }
                 .frame(minHeight: 50, maxHeight: 50)
                 .onTapGesture {
-                    authController.handleSignInButton()
+                    authController.handleSignInButton { isSuccess in
+                        if isSuccess {
+                            print("Sign in successful!")
+                            path.append("MainView")
+                            // Perform actions for a successful sign-in
+                        } else {
+                            print("Sign in failed.")
+                            // Handle the failure case, show an alert, etc.
+                        }
+                    }
+
                 }
                 NavigationLink(
                     destination:

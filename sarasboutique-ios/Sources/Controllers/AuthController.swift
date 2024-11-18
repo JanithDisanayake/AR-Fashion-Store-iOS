@@ -11,17 +11,24 @@ import GoogleSignIn
 import GoogleSignInSwift
 
 class AuthController : ObservableObject {
-    func handleSignInButton() {
+    func handleSignInButton(completion: @escaping (Bool) -> Void) {
+        guard let presentingViewController = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first?.rootViewController else {
+            completion(false)
+            return
+        }
         
-        guard let presentingViewController = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first?.rootViewController else {return}
-        
-        GIDSignIn.sharedInstance.signIn(
-            withPresenting: presentingViewController) { signInResult, error in
-                guard let result = signInResult else {
-                    // Inspect error
-                    return
-                }
+        GIDSignIn.sharedInstance.signIn(withPresenting: presentingViewController) { signInResult, error in
+            if let result = signInResult {
                 print("Sign In")
+                // Call the completion handler with true to indicate success
+                completion(true)
+            } else {
+                // Inspect error if needed
+                print("Error during sign in:", error?.localizedDescription ?? "Unknown error")
+                // Call the completion handler with false to indicate failure
+                completion(false)
             }
+        }
     }
+
 }
