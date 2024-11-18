@@ -9,18 +9,32 @@ import SwiftUI
 
 struct CardView: View {
     let item: Product
+    @State private var isFavorite = false
     
     private let productController = ProductController()
 
     var body: some View {
         
         VStack(alignment: .leading) {
-            Image(item.imageUrls[0])
-                .resizable()
-                .scaledToFill()
-                .frame(height: 200)
-                .clipped()
-                .cornerRadius(10)
+            ZStack(alignment: .topTrailing) {
+                // Image
+                Image(item.imageUrls[0])
+                    .resizable()
+                    .scaledToFill()
+                    .frame(height: 200)
+                    .clipped()
+                    .cornerRadius(10)
+                
+                // Heart-shaped button
+                Button(action: {
+                    isFavorite.toggle()
+                }) {
+                    Image(systemName: isFavorite ? "heart.fill" : "heart")
+                        .foregroundColor(isFavorite ? .red : .black) // Red for favorite, black outline otherwise
+                        .padding(8)
+                        .padding([.top, .trailing], 10)
+                }
+            }
             
             VStack(alignment: .leading, spacing: 8) {
                 Text(item.name)
