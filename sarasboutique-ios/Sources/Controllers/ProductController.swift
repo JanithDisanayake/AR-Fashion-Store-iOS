@@ -100,4 +100,24 @@ class ProductController {
         }
         return Product.sample
     }
+    
+    func addToWishList(userId: String, product: Product) async throws -> Bool {
+        let db = Firestore.firestore()
+        let collection = "wishlist"
+
+        do {
+            // Set data in Firestore
+            try await db.collection(collection).document(userId).setData([
+                "userId": userId,
+                "product": product
+            ])
+            
+            print("Successfully added to the wishlist")
+            return true
+            
+        } catch {
+            print("Error adding document: \(error)")
+            throw error
+        }
+    }
 }
