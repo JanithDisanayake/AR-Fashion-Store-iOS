@@ -17,6 +17,7 @@ struct LoginView: View {
     @State var isAuthenticated = false
     @State var errorMessage: String?
     @StateObject private var authViewModel = AuthenticationViewModel()
+    @StateObject private var authController = AuthController()
 
     
     var body: some View {
@@ -84,28 +85,25 @@ struct LoginView: View {
                     }
                     .frame(minHeight: 50, maxHeight: 50)
                 }
-                NavigationLink(
-                    destination:
-                        MainView()
-                        .navigationBarBackButtonHidden(true)
-                ) {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 30)
-                            .stroke(Color.gray, lineWidth: 2) // Set the border color and width here
-                        HStack(alignment: .center, spacing: 25) {
-                            Image(.googleLogo)
-                                .resizable()
-                                .frame(width: 32, height: 32)
-                            Text("Continue with Google")
-                                .font(.system(size: 20, weight: .bold, design: .default))
-                                .foregroundColor(Color.black)
-                        }
-                        .font(.system(size: 16))
-                        .foregroundColor(.blue)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.leading, 20)
+                ZStack {
+                    RoundedRectangle(cornerRadius: 30)
+                        .stroke(Color.gray, lineWidth: 2) // Set the border color and width here
+                    HStack(alignment: .center, spacing: 25) {
+                        Image(.googleLogo)
+                            .resizable()
+                            .frame(width: 32, height: 32)
+                        Text("Continue with Google")
+                            .font(.system(size: 20, weight: .bold, design: .default))
+                            .foregroundColor(Color.black)
                     }
-                    .frame(minHeight: 50, maxHeight: 50)
+                    .font(.system(size: 16))
+                    .foregroundColor(.blue)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.leading, 20)
+                }
+                .frame(minHeight: 50, maxHeight: 50)
+                .onTapGesture {
+                    authController.handleSignInButton()
                 }
                 NavigationLink(
                     destination:
