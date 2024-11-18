@@ -101,15 +101,20 @@ class ProductController {
         return Product.sample
     }
     
-    func addToWishList(userId: String, product: Product) async throws -> Bool {
+    func addToWishList(userId: String, product: Product) async -> Bool {
         let db = Firestore.firestore()
-        let collection = "wishlist"
+        let collection = "users-wishlist"
 
         do {
-            // Set data in Firestore
-            try await db.collection(collection).document(userId).setData([
+            let productData: [String: Any] = [
+                "id": product.productId,        // Assuming Product has 'id'
+                "name": product.name,    // Assuming Product has 'name'
+                "price": product.price   // Assuming Product has 'price'
+            ]
+            
+            try await db.collection(collection).addDocument(data: [
                 "userId": userId,
-                "product": product
+                "product": productData
             ])
             
             print("Successfully added to the wishlist")
@@ -117,7 +122,7 @@ class ProductController {
             
         } catch {
             print("Error adding document: \(error)")
-            throw error
+            return false
         }
     }
 }

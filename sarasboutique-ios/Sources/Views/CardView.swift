@@ -28,6 +28,9 @@ struct CardView: View {
                 // Heart-shaped button
                 Button(action: {
                     isFavorite.toggle()
+                    Task {
+                        await addToWishList()
+                    }
                 }) {
                     Image(systemName: isFavorite ? "heart.fill" : "heart")
                         .foregroundColor(isFavorite ? .red : .black) // Red for favorite, black outline otherwise
@@ -63,6 +66,12 @@ struct CardView: View {
                 }
             }
         }
+    }
+    
+    func addToWishList() async {
+        let userId = "kt6kzM9eGfkCeq2TZhVq"
+        await productController.addToWishList(userId: userId, product: item)
+        
     }
         
 }
