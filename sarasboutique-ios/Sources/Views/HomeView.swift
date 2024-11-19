@@ -20,15 +20,15 @@ struct HomeView: View {
                 VStack(spacing: 10) {
                     ForEach(0..<products.count / 2, id: \.self) { index in
                         HStack(spacing: 25) {
-                            CardView(item: products[index * 2])
+                            CardView(product: products[index * 2])
                             if (index * 2 + 1) < products.count {
-                                CardView(item: products[index * 2 + 1])
+                                CardView(product: products[index * 2 + 1])
                             }
                         }
                     }
                     if products.count % 2 != 0 {
                         HStack {
-                            CardView(item: products.last!)
+                            CardView(product: products.last!)
                         }
                     }
                 }

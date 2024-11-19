@@ -27,15 +27,15 @@ struct WishListView: View {
                 VStack(spacing: 10) {
                     ForEach(0..<items.count / 2, id: \.self) { index in
                         HStack(spacing: 25) {
-                            CardView(item: items[index * 2].product)
+                            CardView(product: items[index * 2].product)
                             if (index * 2 + 1) < items.count {
-                                CardView(item: items[index * 2 + 1].product)
+                                CardView(product: items[index * 2 + 1].product)
                             }
                         }
                     }
                     if items.count % 2 != 0 {
                         HStack {
-                            CardView(item: items.last!.product)
+                            CardView(product: items.last!.product)
                         }
                     }
                 }

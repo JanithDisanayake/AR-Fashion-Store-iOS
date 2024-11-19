@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CardView: View {
-    let item: Product
+    let product: Product
     @State private var isFavorite = false
     
     private let wishlistController = WishlistController()
@@ -19,7 +19,7 @@ struct CardView: View {
         VStack(alignment: .leading) {
             ZStack(alignment: .topTrailing) {
                 // Image
-                Image(item.imageUrls[0])
+                Image(product.imageUrls[0])
                     .resizable()
                     .scaledToFill()
                     .frame(height: 200)
@@ -41,11 +41,11 @@ struct CardView: View {
             }
             
             VStack(alignment: .leading, spacing: 8) {
-                Text(item.name)
+                Text(product.name)
                     .font(.title3)
                     .fontWeight(.bold)
                 
-                Text("$ \(item.price/100)")
+                Text("$ \(product.price/100)")
                     .font(.body)
                     .foregroundColor(.secondary)
             }
@@ -57,26 +57,39 @@ struct CardView: View {
         .frame(width: (UIScreen.main.bounds.width - 60) / 2)
         .onTapGesture {
             Task {
-                if let productId = item.productId, !productId.isEmpty {
-                    do {
-                        let product = try await productController.fetchProductbyId(id: productId)
-                        print("Fetched product: \(product)")
-                    } catch {
-                        print("Error fetching product: \(error)")
-                    }
-                }
+//                if let productId = item.productId, !productId.isEmpty {
+//                    do {
+//                        let product = try await productController.fetchProductbyId(id: productId)
+//                        print("Fetched product: \(product)")
+//                    } catch {
+//                        print("Error fetching product: \(error)")
+//                    }
+//                }
+            }
+        }
+        .task {
+            print("Card View")
+            let userId = "kt6kzM9eGfkCeq2TZhVq"
+            let x = "desiredProductId"
+            let items = await wishlistController.getAllWishlistItems(userId: userId)
+            if let matchingItem = items.first(where: { $0.product.productId == product.productId }) {
+                isFavorite = true
+                print("Favourite item: \(matchingItem.product.name)")
+            } else {
+                isFavorite = false
+                print("Not a Favourite item")
             }
         }
     }
     
     func addToWishList() async {
         let userId = "kt6kzM9eGfkCeq2TZhVq"
-        await wishlistController.addToWishList(userId: userId, product: item)
+        _ = await wishlistController.addToWishList(userId: userId, product: product)
         
     }
         
 }
 
 #Preview {
-    CardView(item: Product.sample)
+    CardView(product: Product.sample)
 }
