@@ -108,4 +108,23 @@ class WishlistController {
         }
         return items;
     }
+    
+    func removeItemFromWishlist(userId: String, productId: String) async {
+        let wishlistRef = db.collection("wishlist")
+        do {
+            let querySnapshot = try await wishlistRef
+                .whereField("userId", isEqualTo: userId)
+                .whereField("product.productId", isEqualTo: productId)
+                .getDocuments()
+            if let document = querySnapshot.documents.first {
+                try await document.reference.delete()
+                print("Item removed from wishlist.")
+            } else {
+                print("Item not found in wishlist.")
+            }
+        }
+        catch {
+            print("Error removing item from wishlist: \(error.localizedDescription).")
+        }
+    }
 }
