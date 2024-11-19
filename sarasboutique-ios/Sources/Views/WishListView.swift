@@ -15,7 +15,7 @@ import SwiftUI
 //}
 
 struct WishListView: View {
-    @State private var products: [Product] = []
+    @State private var items: [WishlistItem] = []
     @State private var isLoading: Bool = false
     @State private var errorMessage: String?
     
@@ -25,24 +25,24 @@ struct WishListView: View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 10) {
-                    ForEach(0..<products.count / 2, id: \.self) { index in
+                    ForEach(0..<items.count / 2, id: \.self) { index in
                         HStack(spacing: 25) {
-                            CardView(item: products[index * 2])
-                            if (index * 2 + 1) < products.count {
-                                CardView(item: products[index * 2 + 1])
+                            CardView(item: items[index * 2].product)
+                            if (index * 2 + 1) < items.count {
+                                CardView(item: items[index * 2 + 1].product)
                             }
                         }
                     }
-                    if products.count % 2 != 0 {
+                    if items.count % 2 != 0 {
                         HStack {
-                            CardView(item: products.last!)
+                            CardView(item: items.last!.product)
                         }
                     }
                 }
                 .padding()
                 .padding(.horizontal, 50)
                 .task {
-                    await fetchProducts()
+                    await fetchItems()
                 }
             }
             .navigationTitle("Home")
@@ -50,16 +50,9 @@ struct WishListView: View {
         }
     }
     
-    private func fetchProducts() async {
-        do {
-            let userId = "kt6kzM9eGfkCeq2TZhVq"
-            let x = await wishlistController.getAllWishlistItems(userId: userId)
-            print("Data \(x)")
-
-        } catch {
-            print("Error fetching products:", error)
-        }
-        
+    private func fetchItems() async {
+        let userId = "kt6kzM9eGfkCeq2TZhVq"
+        items = await wishlistController.getAllWishlistItems(userId: userId)
     }
 }
 
