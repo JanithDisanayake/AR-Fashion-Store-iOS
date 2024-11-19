@@ -13,24 +13,32 @@ class WishlistController {
     func addToWishList(userId: String, product: Product) async -> Bool {
         let db = Firestore.firestore()
         let collection = "wishlist"
+        let productData: [String: Any] = [
+            "productId": product.productId,
+            "name": product.name,
+            "price": product.price
+        ]
 
+        let query = db.collection(collection)
+            .whereField("userId", isEqualTo: userId)
+            .whereField("product.productId", isEqualTo: product.productId) // Assuming `productData` contains `productId`
+        
         do {
-            let productData: [String: Any] = [
-                "id": product.productId,
-                "name": product.name,
-                "price": product.price
-            ]
+            let snapshot = try await query.getDocuments()
             
-            try await db.collection(collection).addDocument(data: [
-                "userId": userId,
-                "product": productData
-            ])
-            
-            print("Successfully added to the wishlist")
-            return true
-            
+            if snapshot.isEmpty {
+                try await db.collection(collection).addDocument(data: [
+                    "userId": userId,
+                    "product": productData
+                ])
+                print("Product added to wishlist successfully.")
+                return true
+            } else {
+                print("Product already exists in the wishlist.")
+                return false
+            }
         } catch {
-            print("Error adding document: \(error)")
+            print("Error checking or adding wishlist item: \(error)")
             return false
         }
     }
