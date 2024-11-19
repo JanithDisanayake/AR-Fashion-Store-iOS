@@ -10,18 +10,29 @@ import Foundation
 import FirebaseFirestore
 
 class WishlistController {
+    let db = Firestore.firestore()
+    
     func addToWishList(userId: String, product: Product) async -> Bool {
-        let db = Firestore.firestore()
+        
         let collection = "wishlist"
         let productData: [String: Any] = [
             "productId": product.productId,
             "name": product.name,
-            "price": product.price
+            "description": product.description,
+            "category": product.category,
+            "price": product.price,
+            "stockQuantity": product.stockQuantity,
+            "size": product.size,
+            "color": product.color,
+            "material": product.material,
+            "imageUrls": product.imageUrls,
+            "objectUrl": product.objectUrl,
+            
         ]
 
         let query = db.collection(collection)
             .whereField("userId", isEqualTo: userId)
-            .whereField("product.productId", isEqualTo: product.productId) // Assuming `productData` contains `productId`
+            .whereField("product.productId", isEqualTo: product.productId)
         
         do {
             let snapshot = try await query.getDocuments()
@@ -41,5 +52,60 @@ class WishlistController {
             print("Error checking or adding wishlist item: \(error)")
             return false
         }
+    }
+    
+    func getAllWishlistItems(userId: String) async -> [WishlistItem] {
+        var items: [WishlistItem] = []
+        
+        do {
+            let querySnapshot = try await db.collection("wishlist").getDocuments()
+            
+            for document in querySnapshot.documents {
+                let data = document.data()
+                if  let userId = data["userId"] as? String,
+                    let product = data["product"] as? [String: Any],
+                    let productId = product["productId"] as? String,
+                    let name = product["name"] as? String,
+                    let description = product["description"] as? String,
+                    let category = product["category"] as? String,
+                    let price = product["price"] as? Int,
+                    let stockQuantity = product["stockQuantity"] as? Int,
+                    let size = product["size"] as? [String],
+                    let color = product["color"] as? [String],
+                    let material = product["material"] as? String,
+                    let imageUrls = product["imageUrls"] as? [String],
+                    let objectUrl = product["objectUrl"] as? String {
+                    
+                    
+                    let product = Product(
+                        productId: productId,
+                        name: name,
+                        description: description,
+                        category: category,
+                        price: price,
+                        stockQuantity: stockQuantity,
+                        size: size,
+                        color: color,
+                        material: material,
+                        imageUrls: imageUrls,
+                        objectUrl: objectUrl
+                    )
+                    
+                    let item = WishlistItem(
+                        userId: userId,
+                        product: product
+                    )
+                    
+                    items.append(item)
+                } else {
+                    print("Error: Missing or invalid data in document \(document.documentID)")
+                }
+            }
+            return items
+            
+        } catch {
+            print("Error getting documents: \(error)")
+        }
+        return items;
     }
 }
