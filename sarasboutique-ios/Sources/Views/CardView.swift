@@ -11,6 +11,7 @@ struct CardView: View {
     let item: Product
     @State private var isFavorite = false
     
+    private let wishlistController = WishlistController()
     private let productController = ProductController()
 
     var body: some View {
@@ -70,7 +71,7 @@ struct CardView: View {
     
     func addToWishList() async {
         let userId = "kt6kzM9eGfkCeq2TZhVq"
-        await productController.addToWishList(userId: userId, product: item)
+        await wishlistController.addToWishList(userId: userId, product: item)
         
     }
         
