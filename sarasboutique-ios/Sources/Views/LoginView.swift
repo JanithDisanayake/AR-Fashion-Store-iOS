@@ -8,6 +8,7 @@
 import SwiftUI
 import Firebase
 import FirebaseAuth
+import AuthenticationServices
 
 struct LoginView: View {
     @State private var email = ""
@@ -17,6 +18,7 @@ struct LoginView: View {
     @State var isAuthenticated = false
     @State var errorMessage: String?
     @StateObject private var authViewModel = AuthenticationViewModel()
+    @StateObject private var authController = AuthController()
 
     
     var body: some View {
@@ -60,52 +62,72 @@ struct LoginView: View {
                         .cornerRadius(30)
                 }
                 Text("---------- or ----------")
-                NavigationLink(
-                    destination:
-                        MainView()
-                        .navigationBarBackButtonHidden(true)
-                ) {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 30)
-                            .stroke(Color.gray, lineWidth: 2) // Set the border color and width here
-                        HStack(alignment: .center, spacing: 25) {
-                            Image(systemName: "apple.logo")
-                                .font(.title)
-                                .foregroundColor(.black)
-                                .frame(width: 32, height: 32)
-                            Text("Continue with Apple")
-                                .font(.system(size: 20, weight: .bold, design: .default))
-                                .foregroundColor(Color.black)
-                        }
-                        .font(.system(size: 16))
-                        .foregroundColor(.blue)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.leading, 20)
+                
+                SignInWithAppleButton(.signIn) { request in
+                    request.requestedScopes = [.fullName, .email]
+                } onCompletion: { result in
+                    switch result {
+                    case .success(let authorization):
+                        handleSuccessfulLogin(with: authorization)
+                    case .failure(let error):
+                        handleLoginError(with: error)
                     }
-                    .frame(minHeight: 50, maxHeight: 50)
                 }
-                NavigationLink(
-                    destination:
-                        MainView()
-                        .navigationBarBackButtonHidden(true)
-                ) {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 30)
-                            .stroke(Color.gray, lineWidth: 2) // Set the border color and width here
-                        HStack(alignment: .center, spacing: 25) {
-                            Image(.googleLogo)
-                                .resizable()
-                                .frame(width: 32, height: 32)
-                            Text("Continue with Google")
-                                .font(.system(size: 20, weight: .bold, design: .default))
-                                .foregroundColor(Color.black)
-                        }
-                        .font(.system(size: 16))
-                        .foregroundColor(.blue)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.leading, 20)
+                .signInWithAppleButtonStyle(.whiteOutline)
+                .frame(maxWidth: .infinity, minHeight: 50, maxHeight: 50, alignment: .leading)
+                .cornerRadius(30)
+                .padding()
+                
+                ZStack {
+                    RoundedRectangle(cornerRadius: 30)
+                        .stroke(Color.gray, lineWidth: 2) // Set the border color and width here
+                    HStack(alignment: .center, spacing: 25) {
+                        Image(systemName: "apple.logo")
+                            .font(.title)
+                            .foregroundColor(.black)
+                            .frame(width: 32, height: 32)
+                        Text("Continue with Apple")
+                            .font(.system(size: 20, weight: .bold, design: .default))
+                            .foregroundColor(Color.black)
                     }
-                    .frame(minHeight: 50, maxHeight: 50)
+                    .font(.system(size: 16))
+                    .foregroundColor(.blue)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.leading, 20)
+                }
+                .frame(minHeight: 50, maxHeight: 50)
+                .onTapGesture {
+                    
+                }
+                ZStack {
+                    RoundedRectangle(cornerRadius: 30)
+                        .stroke(Color.gray, lineWidth: 2) // Set the border color and width here
+                    HStack(alignment: .center, spacing: 25) {
+                        Image(.googleLogo)
+                            .resizable()
+                            .frame(width: 32, height: 32)
+                        Text("Continue with Google")
+                            .font(.system(size: 20, weight: .bold, design: .default))
+                            .foregroundColor(Color.black)
+                    }
+                    .font(.system(size: 16))
+                    .foregroundColor(.blue)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.leading, 20)
+                }
+                .frame(minHeight: 50, maxHeight: 50)
+                .onTapGesture {
+                    authController.handleSignInButton { isSuccess in
+                        if isSuccess {
+                            print("Sign in successful!")
+                            path.append("MainView")
+                            // Perform actions for a successful sign-in
+                        } else {
+                            print("Sign in failed.")
+                            // Handle the failure case, show an alert, etc.
+                        }
+                    }
+
                 }
                 NavigationLink(
                     destination:
@@ -165,6 +187,23 @@ struct LoginView: View {
                 }
             }
         }
+    }
+    private func handleSuccessfulLogin(with authorization: ASAuthorization) {
+        if let userCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
+            print(userCredential.user)
+            
+            if userCredential.authorizedScopes.contains(.fullName) {
+                print(userCredential.fullName?.givenName ?? "No given name")
+            }
+            
+            if userCredential.authorizedScopes.contains(.email) {
+                print(userCredential.email ?? "No email")
+            }
+        }
+    }
+    
+    private func handleLoginError(with error: Error) {
+        print("Could not authenticate: \\(error.localizedDescription)")
     }
 }
 
