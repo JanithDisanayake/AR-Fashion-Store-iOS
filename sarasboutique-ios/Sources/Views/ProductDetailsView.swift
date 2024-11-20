@@ -14,13 +14,14 @@ struct ProductDetailsView: View {
                 ZStack {
                     Rectangle()
                         .foregroundColor(.gray)
-                        .frame(width: .infinity, height: 500)
+                        .frame(width: .infinity, height: .infinity)
 
                     AsyncImage(url: URL(string: "https://www.saras-boutique.com/_app/immutable/assets/Prod1.B56R4Eth.jpg"))
                         .padding()
                         .cornerRadius(50)
                 }
                 .shadow(color: .gray.opacity(0.5), radius: 5, x: 0, y: 5)
+                .padding()
                 
                 HStack{
                     VStack{
@@ -90,7 +91,7 @@ struct ProductDetailsView: View {
                         .foregroundColor(Color(red: 0.21, green: 0.21, blue: 0.21))
                         .opacity(0.70)
                 }
-                .padding(.horizontal, 50)
+                .padding(.horizontal, 75)
             }
             .padding(10)
             .frame(width: .infinity, height: .infinity)

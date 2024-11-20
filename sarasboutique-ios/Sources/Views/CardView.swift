@@ -16,54 +16,57 @@ struct CardView: View {
     private let cartController = CartController()
 
     var body: some View {
-        
         VStack(alignment: .leading) {
-            ZStack(alignment: .topTrailing) {
-                // Image
-                Image(product.imageUrls[0])
-                    .resizable()
-                    .scaledToFill()
-                    .frame(height: 200)
-                    .clipped()
-                    .cornerRadius(10)
-                
-                // Heart-shaped button at the bottom-right
+            NavigationLink(destination: ProductDetailsView()) {
                 VStack {
-                    Button(action: {
-                        Task {
-                            await alterWishList()
+                    ZStack(alignment: .topTrailing) {
+                        // Image
+                        Image(product.imageUrls[0])
+                            .resizable()
+                            .scaledToFill()
+                            .frame(height: 200)
+                            .clipped()
+                            .cornerRadius(10)
+                        
+                        VStack {
+                            Button(action: {
+                                Task {
+                                    await alterWishList()
+                                }
+                            }) {
+                                Image(systemName: isFavorite ? "heart.fill" : "heart")
+                                    .foregroundColor(isFavorite ? .red : .black) // Red for favorite, black outline otherwise
+                                    .background(Color.white.opacity(0.7), in: Circle()) // Optional: Add a white background for better visibility
+                                    .padding(3)
+                            }
+                            
+                            Button(action: {
+                                Task {
+                                    await alterCart()
+                                }
+                            }) {
+                                Image(systemName: "basket")
+                                    .foregroundColor(.black) // Red for favorite, black outline otherwise
+                                    .background(Color.white.opacity(0.7), in: Circle()) // Optional: Add a white background for better visibility
+                                    .padding(3)
+                            }
                         }
-                    }) {
-                        Image(systemName: isFavorite ? "heart.fill" : "heart")
-                            .foregroundColor(isFavorite ? .red : .black) // Red for favorite, black outline otherwise
-                            .background(Color.white.opacity(0.7), in: Circle()) // Optional: Add a white background for better visibility
-                            .padding(3)
+                        .padding(10)
                     }
                     
-                    Button(action: {
-                        Task {
-                            await alterCart()
-                        }
-                    }) {
-                        Image(systemName: "basket")
-                            .foregroundColor(.black) // Red for favorite, black outline otherwise
-                            .background(Color.white.opacity(0.7), in: Circle()) // Optional: Add a white background for better visibility
-                            .padding(3)
+                    VStack(alignment: .center, spacing: 8) {
+                        Text(product.name)
+                            .font(.title3)
+                            .fontWeight(.bold)
+                            .foregroundStyle(.black)
+                        
+                        Text("$ \(product.price / 100)")
+                            .font(.body)
+                            .foregroundColor(.secondary)
                     }
+                    .padding()
                 }
-                .padding(10)
             }
-            
-            VStack(alignment: .leading, spacing: 8) {
-                Text(product.name)
-                    .font(.title3)
-                    .fontWeight(.bold)
-                
-                Text("$ \(product.price / 100)")
-                    .font(.body)
-                    .foregroundColor(.secondary)
-            }
-            .padding()
         }
         .background(Color.white)
         .cornerRadius(10)
@@ -89,10 +92,10 @@ struct CardView: View {
             let items = await wishlistController.getAllWishlistItems(userId: userId)
             if let matchingItem = items.first(where: { $0.product.productId == product.productId }) {
                 isFavorite = true
-                print("Favourite item: \(matchingItem.product.name)")
+                // print("Favourite item: \(matchingItem.product.name)")
             } else {
                 isFavorite = false
-                print("Not a Favourite item")
+                // print("Not a Favourite item")
             }
         }
     }
