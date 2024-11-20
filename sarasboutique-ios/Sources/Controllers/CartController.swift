@@ -41,7 +41,7 @@ class CartController {
                 try await db.collection(collection).addDocument(data: [
                     "userId": userId,
                     "product": productData,
-                    "count": 1//
+                    "quantity": 1
                 ])
                 print("Product added to cart successfully.")
                 return true
@@ -55,15 +55,16 @@ class CartController {
         }
     }
     
-    func getAllItemsFromCart(userId: String) async -> [WishlistItem] {
-        var items: [WishlistItem] = []
+    func getAllItemsFromCart(userId: String) async -> [CartItem] {
+        var items: [CartItem] = []
         
         do {
-            let querySnapshot = try await db.collection("wishlist").getDocuments()
+            let querySnapshot = try await db.collection("cart").getDocuments()
             
             for document in querySnapshot.documents {
                 let data = document.data()
                 if  let userId = data["userId"] as? String,
+                    let quantity = data["quantity"] as? Int,
                     let product = data["product"] as? [String: Any],
                     let productId = product["productId"] as? String,
                     let name = product["name"] as? String,
@@ -92,9 +93,10 @@ class CartController {
                         objectUrl: objectUrl
                     )
                     
-                    let item = WishlistItem(
+                    let item = CartItem(
                         userId: userId,
-                        product: product
+                        product: product,
+                        quantity: quantity
                     )
                     
                     items.append(item)
