@@ -13,6 +13,7 @@ struct CardView: View {
     
     private let wishlistController = WishlistController()
     private let productController = ProductController()
+    private let cartController = CartController()
 
     var body: some View {
         
@@ -26,17 +27,31 @@ struct CardView: View {
                     .clipped()
                     .cornerRadius(10)
                 
-                // Heart-shaped button
-                Button(action: {
-                    Task {
-                        await alterWishList()
+                // Heart-shaped button at the bottom-right
+                VStack {
+                    Button(action: {
+                        Task {
+                            await alterWishList()
+                        }
+                    }) {
+                        Image(systemName: isFavorite ? "heart.fill" : "heart")
+                            .foregroundColor(isFavorite ? .red : .black) // Red for favorite, black outline otherwise
+                            .background(Color.white.opacity(0.7), in: Circle()) // Optional: Add a white background for better visibility
+                            .padding(3)
                     }
-                }) {
-                    Image(systemName: isFavorite ? "heart.fill" : "heart")
-                        .foregroundColor(isFavorite ? .red : .black) // Red for favorite, black outline otherwise
-                        .padding(8)
-                        .padding([.top, .trailing], 10)
+                    
+                    Button(action: {
+                        Task {
+                            await alterCart()
+                        }
+                    }) {
+                        Image(systemName: "basket")
+                            .foregroundColor(.black) // Red for favorite, black outline otherwise
+                            .background(Color.white.opacity(0.7), in: Circle()) // Optional: Add a white background for better visibility
+                            .padding(3)
+                    }
                 }
+                .padding(10)
             }
             
             VStack(alignment: .leading, spacing: 8) {
@@ -44,7 +59,7 @@ struct CardView: View {
                     .font(.title3)
                     .fontWeight(.bold)
                 
-                Text("$ \(product.price/100)")
+                Text("$ \(product.price / 100)")
                     .font(.body)
                     .foregroundColor(.secondary)
             }
@@ -56,14 +71,15 @@ struct CardView: View {
         .frame(width: (UIScreen.main.bounds.width - 60) / 2)
         .onTapGesture {
             Task {
-//                if let productId = item.productId, !productId.isEmpty {
-//                    do {
-//                        let product = try await productController.fetchProductbyId(id: productId)
-//                        print("Fetched product: \(product)")
-//                    } catch {
-//                        print("Error fetching product: \(error)")
-//                    }
-//                }
+                // Uncomment to handle tap gesture
+                // if let productId = item.productId, !productId.isEmpty {
+                //     do {
+                //         let product = try await productController.fetchProductbyId(id: productId)
+                //         print("Fetched product: \(product)")
+                //     } catch {
+                //         print("Error fetching product: \(error)")
+                //     }
+                // }
             }
         }
         .task {
@@ -92,6 +108,11 @@ struct CardView: View {
             let userId = "kt6kzM9eGfkCeq2TZhVq"
             await wishlistController.removeItemFromWishlist(userId: userId, productId: product.productId!)
         }
+    }
+    
+    func alterCart() async {
+        let userId = "kt6kzM9eGfkCeq2TZhVq"
+        await cartController.addToCart(userId: userId, product: product)
     }
         
 }
