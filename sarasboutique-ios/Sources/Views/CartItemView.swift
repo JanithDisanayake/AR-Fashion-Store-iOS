@@ -9,6 +9,10 @@ import SwiftUI
 
 struct CartItemView: View {
     var item: CartItem
+    @State var quantity: Int = 1
+    
+    private let cartController = CartController()
+
 
     var body: some View {
         ZStack {
@@ -50,6 +54,12 @@ struct CartItemView: View {
 
                 VStack {
                     Button(action: {
+                        Task {
+                            if quantity != 0 {
+                                quantity -= 1
+                                await cartController.updateQuantity(cartItem: item, quantity: quantity)
+                            }
+                        }
                     }) {
                         Text("-")
                             .frame(width: 20, height: 20)
@@ -57,10 +67,14 @@ struct CartItemView: View {
                             .cornerRadius(4)
                     }
 
-                    Text("\(item.quantity)")
+                    Text("\(quantity)")
                         .font(.body)
 
                     Button(action: {
+                        Task {
+                            quantity += 1
+                            await cartController.updateQuantity(cartItem: item, quantity: quantity)
+                        }
                     }) {
                         Text("+")
                             .frame(width: 20, height: 20)
@@ -72,6 +86,9 @@ struct CartItemView: View {
             .padding()
         }
         .frame(maxWidth: .infinity, minHeight: 99, maxHeight: 99)
+        .task {
+            quantity = item.quantity;
+        }
     }
 }
 

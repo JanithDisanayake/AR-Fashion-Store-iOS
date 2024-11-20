@@ -130,4 +130,36 @@ class CartController {
             print("Error removing item from wishlist: \(error.localizedDescription).")
         }
     }
+    
+    func updateQuantity(cartItem: CartItem, quantity: Int) async -> Bool {
+        let collection = "cart"
+        
+        let query = db.collection(collection)
+            .whereField("userId", isEqualTo: cartItem.userId)
+            .whereField("product.productId", isEqualTo: cartItem.product.productId)
+
+        do {
+            let snapshot = try await query.getDocuments()
+            
+            if let document = snapshot.documents.first {
+                if quantity > 0 {
+                    try await document.reference.updateData([
+                        "quantity": quantity
+                    ])
+                    print("Cart item quantity updated successfully.")
+                } else {
+                    try await document.reference.delete()
+                    print("Cart item removed successfully.")
+                }
+                return true
+            } else {
+                print("Cart item not found.")
+                return false
+            }
+        } catch {
+            print("Error updating cart item quantity: \(error)")
+            return false
+        }
+    }
+
 }

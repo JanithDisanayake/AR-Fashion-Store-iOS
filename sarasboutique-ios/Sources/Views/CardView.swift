@@ -44,7 +44,7 @@ struct CardView: View {
                             }) {
                                 Image(systemName: isFavorite ? "heart.fill" : "heart")
                                     .foregroundColor(isFavorite ? .red : .black) // Red for favorite, black outline otherwise
-                                    .background(Color.white.opacity(0.7), in: Circle()) // Optional: Add a white background for better visibility
+                                    .background(.clear) // Optional: Add a white background for better visibility
                                     .padding(3)
                             }
                             
@@ -55,7 +55,7 @@ struct CardView: View {
                             }) {
                                 Image(systemName: "basket")
                                     .foregroundColor(.black) // Red for favorite, black outline otherwise
-                                    .background(Color.white.opacity(0.7), in: Circle()) // Optional: Add a white background for better visibility
+                                    .background(.clear) // Optional: Add a white background for better visibility
                                     .padding(3)
                             }
                         }
@@ -95,7 +95,6 @@ struct CardView: View {
             }
         }
         .task {
-            print("Card View")
             let userId = "kt6kzM9eGfkCeq2TZhVq"
             let x = "desiredProductId"
             let items = await wishlistController.getAllWishlistItems(userId: userId)
