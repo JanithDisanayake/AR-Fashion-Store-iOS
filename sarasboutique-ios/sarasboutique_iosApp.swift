@@ -25,7 +25,7 @@ struct sarasboutique_iosApp: App {
     
     var body: some Scene {
         WindowGroup {
-            LoginView()
+            ProductDetailsView()
         }
     }
 }
