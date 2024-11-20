@@ -30,7 +30,7 @@ struct Product: Codable {
         size: ["S", "M", "L"],
         color: ["Red", "Blue"],
         material: "Cotton",
-        imageUrls: ["https://example.com/image.jpg"],
+        imageUrls: ["https://kmd-assets.imgix.net/catalog/product/b/0/b0692_oi6_solid_womens_organic_cotton_short_sleeve_tee_purple_a.jpg"],
         objectUrl: "https://example.com/object.obj"
     )
 }

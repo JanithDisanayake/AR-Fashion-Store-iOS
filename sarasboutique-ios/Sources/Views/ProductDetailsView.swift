@@ -8,30 +8,42 @@
 import SwiftUI
 
 struct ProductDetailsView: View {
+    let product: Product
+    
+    
     var body: some View {
         VStack() {
             ScrollView(.vertical) {
                 ZStack {
+                    // Placeholder rectangle with the same size as the image
                     Rectangle()
-                        .foregroundColor(.gray)
-                        .frame(width: .infinity, height: .infinity)
-
-                    AsyncImage(url: URL(string: "https://www.saras-boutique.com/_app/immutable/assets/Prod1.B56R4Eth.jpg"))
-                        .padding()
+                        .fill(Color.gray.opacity(0.3))
+                        .frame(width: UIScreen.main.bounds.width - 60, height: 500)
                         .cornerRadius(50)
+
+                    AsyncImage(url: URL(string: product.imageUrls[0])) { image in
+                        image
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: UIScreen.main.bounds.width - 60, height: 500)
+                            .cornerRadius(50)
+                    } placeholder: {
+                        ProgressView()
+                            .frame(width: UIScreen.main.bounds.width - 60, height: 500)
+                    }
                 }
-                .shadow(color: .gray.opacity(0.5), radius: 5, x: 0, y: 5)
                 .padding()
+
                 
                 HStack{
                     VStack{
-                        Text("Elegant Blazer")
+                        Text("\(product.name)")
                             .font(Font.custom("Poppins", size: 20).weight(.semibold))
                             .foregroundColor(Color(red: 0.21, green: 0.21, blue: 0.21))
                             .multilineTextAlignment(.leading)
                             .frame(maxWidth: .infinity)
                             .padding(2)
-                        Text("Women Style")
+                        Text("\(product.category)")
                             .font(Font.custom("Poppins", size: 10).weight(.medium))
                             .foregroundColor(Color(red: 0.21, green: 0.21, blue: 0.21))
                             .multilineTextAlignment(.leading)
@@ -39,7 +51,7 @@ struct ProductDetailsView: View {
                             .frame(width: .infinity)
                     }
 
-                    Text("$129,99")
+                    Text("$ \(product.price/100)")
                         .font(Font.custom("Poppins", size: 20).weight(.semibold))
                         .foregroundColor(Color(red: 0.21, green: 0.21, blue: 0.21))
                         .multilineTextAlignment(.trailing)
@@ -53,28 +65,15 @@ struct ProductDetailsView: View {
 //                        .font(Font.custom("Poppins", size: 12).weight(.medium))
 //                        .foregroundColor(.black)
 
-                    HStack(spacing: 8) { 
-                        Ellipse()
-                            .foregroundColor(.clear)
-                            .frame(width: 32, height: 32)
-                            .background(Color(red: 0.59, green: 0.26, blue: 0.02))
-                            .background(Color(hex: "#592602"))
-                            .cornerRadius(10)
-                        Ellipse()
-                            .foregroundColor(.clear)
-                            .frame(width: 32, height: 32)
-                            .background(Color(hex: "#0707FF"))
-                            .cornerRadius(10)
-                        Ellipse()
-                            .foregroundColor(.clear)
-                            .frame(width: 32, height: 32)
-                            .background(Color(hex: "#131313"))
-                            .cornerRadius(10)
-                        Ellipse()
-                            .foregroundColor(.clear)
-                            .frame(width: 32, height: 32)
-                            .background(Color(hex: "#D80000"))
-                            .cornerRadius(10)
+                    HStack(spacing: 8) {
+                        ForEach(product.color, id: \.self) { color in
+                            Ellipse()
+                                .foregroundColor(.clear)
+                                .frame(width: 32, height: 32)
+                                .background(Color(red: 0.59, green: 0.26, blue: 0.02))
+                                .background(Color(hex: color))
+                                .cornerRadius(10)
+                        }
                     }
                 }
                 .frame(maxWidth: .infinity)
@@ -85,13 +84,13 @@ struct ProductDetailsView: View {
                         .font(Font.custom("Poppins", size: 16).weight(.bold))
                         .foregroundColor(Color(red: 0.21, green: 0.21, blue: 0.21))
                         .padding()
-                    Text("Made from premium fabrics that exude luxury, such as fine wool, soft cashmere, or smooth silk blends, the blazer not only radiates elegance but also ensures comfort and durability. Its thoughtful design features often include a single-breasted closure with tasteful buttons, creating a focal point that complements the blazer's overall sophistication.")
+                    Text("\(product.description)")
                         .font(Font.custom("Poppins", size: 10).weight(.medium))
                         .multilineTextAlignment(.leading)
                         .foregroundColor(Color(red: 0.21, green: 0.21, blue: 0.21))
                         .opacity(0.70)
                 }
-                .padding(.horizontal, 75)
+                .frame(width: UIScreen.main.bounds.width - 60)
             }
             .padding(10)
             .frame(width: .infinity, height: .infinity)
@@ -130,5 +129,5 @@ struct ProductDetailsView: View {
 }
 
 #Preview {
-    ProductDetailsView()
+    ProductDetailsView(product: Product.sample)
 }

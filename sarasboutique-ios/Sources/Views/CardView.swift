@@ -17,16 +17,24 @@ struct CardView: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            NavigationLink(destination: ProductDetailsView()) {
+            NavigationLink(destination: ProductDetailsView(product: product)) {
                 VStack {
                     ZStack(alignment: .topTrailing) {
                         // Image
-                        Image(product.imageUrls[0])
-                            .resizable()
-                            .scaledToFill()
-                            .frame(height: 200)
-                            .clipped()
-                            .cornerRadius(10)
+                        Rectangle()
+                            .fill(Color.gray.opacity(0.3)) // Optional color for the placeholder rectangle
+                            .frame(width: (UIScreen.main.bounds.width - 60) / 2, height: 200) // Match image size
+                        
+                        AsyncImage(url: URL(string: product.imageUrls[0])) { image in
+                            image
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: (UIScreen.main.bounds.width - 60) / 2)
+                        } placeholder: {
+                            ProgressView()
+                                .frame(width: (UIScreen.main.bounds.width - 60) / 2, height: 200) // Ensure ProgressView is centered within the rectangle
+                        }
+
                         
                         VStack {
                             Button(action: {
@@ -66,6 +74,7 @@ struct CardView: View {
                     }
                     .padding()
                 }
+                .frame(height: 300)
             }
         }
         .background(Color.white)
