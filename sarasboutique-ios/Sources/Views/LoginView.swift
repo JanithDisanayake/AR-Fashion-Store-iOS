@@ -19,6 +19,7 @@ struct LoginView: View {
     @State var errorMessage: String?
     @StateObject private var authViewModel = AuthenticationViewModel()
     @StateObject private var authController = AuthController()
+    @State var notificationController = NotificationController()
 
     
     var body: some View {
@@ -63,20 +64,20 @@ struct LoginView: View {
                 }
                 Text("---------- or ----------")
                 
-                SignInWithAppleButton(.signIn) { request in
-                    request.requestedScopes = [.fullName, .email]
-                } onCompletion: { result in
-                    switch result {
-                    case .success(let authorization):
-                        handleSuccessfulLogin(with: authorization)
-                    case .failure(let error):
-                        handleLoginError(with: error)
-                    }
-                }
-                .signInWithAppleButtonStyle(.whiteOutline)
-                .frame(maxWidth: .infinity, minHeight: 50, maxHeight: 50, alignment: .leading)
-                .cornerRadius(30)
-                .padding()
+//                SignInWithAppleButton(.signIn) { request in
+//                    request.requestedScopes = [.fullName, .email]
+//                } onCompletion: { result in
+//                    switch result {
+//                    case .success(let authorization):
+//                        handleSuccessfulLogin(with: authorization)
+//                    case .failure(let error):
+//                        handleLoginError(with: error)
+//                    }
+//                }
+//                .signInWithAppleButtonStyle(.whiteOutline)
+//                .frame(maxWidth: .infinity, minHeight: 50, maxHeight: 50, alignment: .leading)
+//                .cornerRadius(30)
+//                .padding()
                 
                 ZStack {
                     RoundedRectangle(cornerRadius: 30)
@@ -129,11 +130,13 @@ struct LoginView: View {
                     }
 
                 }
-                NavigationLink(
-                    destination:
-                        MainView()
-                        .navigationBarBackButtonHidden(true)
-                ) {
+                Button (action: {
+                    NotificationManager.shared.scheduleNotification(
+                        title: "Hello!",
+                        body: "You've clicked the button.",
+                        delay: 5
+                    )
+                }) {
                     ZStack {
                         RoundedRectangle(cornerRadius: 30)
                             .stroke(Color.gray, lineWidth: 2) // Set the border color and width here
@@ -169,6 +172,13 @@ struct LoginView: View {
                 if destination == "MainView" {
                     MainView()
                         .navigationBarBackButtonHidden()
+                }
+            }
+            .onAppear() {
+                UNUserNotificationCenter.current().getNotificationSettings { settings in
+                    if settings.authorizationStatus != .authorized {
+                        print("Notifications are not authorized.")
+                    }
                 }
             }
         }
