@@ -610,6 +610,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "sarasboutique-ios/Info.plist";
 				INFOPLIST_KEY_NSAppleMusicUsageDescription = "We use Apple Sign-In to securely authenticate users";
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need access to the camera for AR functionality.";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Face ID is used to quickly and securely authenticate your identity for logging into the app.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -652,6 +653,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "sarasboutique-ios/Info.plist";
 				INFOPLIST_KEY_NSAppleMusicUsageDescription = "We use Apple Sign-In to securely authenticate users";
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need access to the camera for AR functionality.";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Face ID is used to quickly and securely authenticate your identity for logging into the app.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
