@@ -9,12 +9,13 @@ import SwiftUI
 
 struct ProductDetailsView: View {
     let product: Product
+    @State var isPresented: Bool = false
     
     
     var body: some View {
         VStack() {
             ScrollView(.vertical) {
-                ZStack {
+                ZStack(alignment: .bottomTrailing) { // Align contents within the ZStack
                     // Placeholder rectangle with the same size as the image
                     Rectangle()
                         .fill(Color.gray.opacity(0.3))
@@ -31,10 +32,27 @@ struct ProductDetailsView: View {
                         ProgressView()
                             .frame(width: UIScreen.main.bounds.width - 60, height: 500)
                     }
+
+                    VStack {
+                        Button {
+                            isPresented.toggle()
+                        } label: {
+                            Image(systemName: "arkit")
+                                .padding(10)
+                                .background(Color(red: 0, green: 0.23, blue: 0.82))
+                                .foregroundStyle(.white)
+                        }
+                        .padding(10)
+                        .background(.clear)
+                    }
+                    .padding(20)
+                    .background(.clear)
+                    .fullScreenCover(isPresented: $isPresented) {
+                        SheetView(modelName: "toy_biplane_idle", isPresented: $isPresented)
+                    }
                 }
                 .padding()
 
-                
                 HStack{
                     VStack{
                         Text("\(product.name)")

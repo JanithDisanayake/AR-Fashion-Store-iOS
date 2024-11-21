@@ -10,7 +10,7 @@ import RealityKit
 import ARKit
 
 struct ARViewContainer : UIViewRepresentable {
-    @Binding var modelName: String
+    var modelName: String
     
     func makeUIView(context: Context) -> ARView {
         let arView = ARView(frame: .zero)
@@ -33,5 +33,5 @@ struct ARViewContainer : UIViewRepresentable {
 }
 
 #Preview {
-    ARViewContainer(modelName: .constant("toy_biplane_idle"))
+    ARViewContainer(modelName: "toy_biplane_idle")
 }

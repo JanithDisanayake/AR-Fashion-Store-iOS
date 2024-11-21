@@ -8,16 +8,16 @@
 import SwiftUI
 
 struct SheetView: View {
-    @Binding var isPresented : Bool
-    @State var modelName : String = "toy_biplane_idle"
+    let modelName: String
+    @Binding var isPresented: Bool
     
     var body: some View {
         ZStack(alignment: .topTrailing) {
 
-            ARViewContainer(modelName: $modelName)
+            ARViewContainer(modelName: modelName)
                 .ignoresSafeArea(edges: .all)
 
-            Button() {
+            Button {
                 isPresented.toggle()
             } label: {
                 Image(systemName: "xmark.circle")
@@ -32,5 +32,6 @@ struct SheetView: View {
 }
 
 #Preview {
-    SheetView(isPresented: .constant(true))
+    SheetView(modelName: "toy_biplane_idle", isPresented: .constant(true))
 }
+
