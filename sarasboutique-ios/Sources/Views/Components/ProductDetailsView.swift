@@ -48,7 +48,7 @@ struct ProductDetailsView: View {
                     .padding(20)
                     .background(.clear)
                     .fullScreenCover(isPresented: $isPresented) {
-                        SheetView(modelName: "toy_biplane_idle", isPresented: $isPresented)
+                        SheetView(modelName: product.objectUrl, isPresented: $isPresented)
                     }
                 }
                 .padding()
