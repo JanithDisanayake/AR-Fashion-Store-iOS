@@ -122,7 +122,7 @@ struct LoginView: View {
                 }
                 .frame(minHeight: 50, maxHeight: 50)
                 .onTapGesture {
-                    authController.handleSignInButton { isSuccess in
+                    authController.handleGoogleSignIn { isSuccess in
                         if isSuccess {
                             print("Sign in successful!")
                             path.append("MainView")
@@ -182,16 +182,16 @@ struct LoginView: View {
     }
     
     func login(email: String, password: String) {
-        Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
-            if let error = error {
-                print(error)
-            } else {
+        authController.handleEmailSignIn(email: email, password: password) { success in
+            if success {
                 authViewModel.authenticateWithFaceID()
                 if authViewModel.isAuthenticated {
                     path.append("MainView")
                 } else {
                     print("Authentication failed")
                 }
+            } else {
+                print("Failed to sign in.")
             }
         }
     }

@@ -9,11 +9,13 @@ import Foundation
 import Firebase
 import GoogleSignIn
 import GoogleSignInSwift
+import FirebaseAuth
+import AuthenticationServices
 
 class AuthController : ObservableObject {
     private let userController = UserController()
     
-    func handleSignInButton(completion: @escaping (Bool) -> Void) {
+    func handleGoogleSignIn(completion: @escaping (Bool) -> Void) {
         var userObj : User?
         
         guard let presentingViewController = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first?.rootViewController else {
@@ -46,7 +48,7 @@ class AuthController : ObservableObject {
         }
     }
     
-    func handleSignUpButton(completion: @escaping (Bool) -> Void) {
+    func handleGoogleSignUp(completion: @escaping (Bool) -> Void) {
         guard let presentingViewController = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first?.rootViewController else {
             completion(false)
             return
@@ -82,5 +84,26 @@ class AuthController : ObservableObject {
             }
         }
     }
-
+    
+    func handleEmailSignIn(email: String, password: String, completion: @escaping (Bool) -> Void) {
+        Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
+            if let error = error {
+                print("Sign-in failed with error: \(error.localizedDescription)")
+                completion(false)
+            } else {
+                print("Sign-in successful for user: \(authResult?.user.email ?? "unknown")")
+                self.userController.getUserByEmail(email: email) { user in
+                    if user.userId.isEmpty {
+                        completion(false)
+                        print("No user found.")
+                    } else {
+                        let userObj = user
+                        print("User retrieved: \(user.firstName) \(user.lastName), ID: \(user.userId), Email: \(user.email)")
+                        UserDataManager.shared.saveUser(user: userObj ?? user)
+                    }
+                }
+                completion(true)
+            }
+        }
+    }
 }

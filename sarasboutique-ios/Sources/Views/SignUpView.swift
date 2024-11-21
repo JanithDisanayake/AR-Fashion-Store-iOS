@@ -107,7 +107,7 @@ struct SignUpView: View {
                 }
                 .frame(minHeight: 50, maxHeight: 50)
                 .onTapGesture {
-                    authController.handleSignUpButton { isSuccess in
+                    authController.handleGoogleSignUp { isSuccess in
                         if isSuccess {
                             print("Sign in successful!")
                             path.append("LoginView")
