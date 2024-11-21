@@ -131,11 +131,11 @@ struct LoginView: View {
 
                 }
                 Button (action: {
-                    NotificationManager.shared.scheduleNotification(
-                        title: "Hello!",
-                        body: "You've clicked the button.",
-                        delay: 5
-                    )
+//                    NotificationManager.shared.scheduleNotification(
+//                        title: "Hello!",
+//                        body: "You've clicked the button.",
+//                        delay: 5
+//                    )
                 }) {
                     ZStack {
                         RoundedRectangle(cornerRadius: 30)
@@ -172,13 +172,6 @@ struct LoginView: View {
                 if destination == "MainView" {
                     MainView()
                         .navigationBarBackButtonHidden()
-                }
-            }
-            .onAppear() {
-                UNUserNotificationCenter.current().getNotificationSettings { settings in
-                    if settings.authorizationStatus != .authorized {
-                        print("Notifications are not authorized.")
-                    }
                 }
             }
         }

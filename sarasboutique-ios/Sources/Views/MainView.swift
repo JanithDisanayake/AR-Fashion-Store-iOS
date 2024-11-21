@@ -28,6 +28,13 @@ struct MainView: View {
             }
 //            .badge("!")
         }
+        .onAppear() {
+            NotificationManager.shared.scheduleNotification(
+                title: "Hello !",
+                body: "You have successfully logged in!",
+                delay: 1
+            )
+        }
     }
 }
 
