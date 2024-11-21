@@ -19,6 +19,7 @@ struct SignUpView: View {
     @State private var confirmPassword = ""
     @State private var path = NavigationPath()
     private let userController = UserController()
+    private var authController = AuthController()
     
     var ref: DatabaseReference = Database.database().reference()
 
@@ -66,6 +67,76 @@ struct SignUpView: View {
                         .foregroundColor(Color.white)
                         .background(Color.blue)
                         .cornerRadius(30)
+                }
+                ZStack {
+                    RoundedRectangle(cornerRadius: 30)
+                        .stroke(Color.gray, lineWidth: 2) // Set the border color and width here
+                    HStack(alignment: .center, spacing: 25) {
+                        Image(systemName: "apple.logo")
+                            .font(.title)
+                            .foregroundColor(.black)
+                            .frame(width: 32, height: 32)
+                        Text("Continue with Apple")
+                            .font(.system(size: 20, weight: .bold, design: .default))
+                            .foregroundColor(Color.black)
+                    }
+                    .font(.system(size: 16))
+                    .foregroundColor(.blue)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.leading, 20)
+                }
+                .frame(minHeight: 50, maxHeight: 50)
+                .onTapGesture {
+                    
+                }
+                ZStack {
+                    RoundedRectangle(cornerRadius: 30)
+                        .stroke(Color.gray, lineWidth: 2) // Set the border color and width here
+                    HStack(alignment: .center, spacing: 25) {
+                        Image(.googleLogo)
+                            .resizable()
+                            .frame(width: 32, height: 32)
+                        Text("Continue with Google")
+                            .font(.system(size: 20, weight: .bold, design: .default))
+                            .foregroundColor(Color.black)
+                    }
+                    .font(.system(size: 16))
+                    .foregroundColor(.blue)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.leading, 20)
+                }
+                .frame(minHeight: 50, maxHeight: 50)
+                .onTapGesture {
+                    authController.handleSignUpButton { isSuccess in
+                        if isSuccess {
+                            print("Sign in successful!")
+                            path.append("LoginView")
+                            // Perform actions for a successful sign-in
+                        } else {
+                            print("Sign in failed.")
+                            // Handle the failure case, show an alert, etc.
+                        }
+                    }
+
+                }
+                Button (action: {}) {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 30)
+                            .stroke(Color.gray, lineWidth: 2) // Set the border color and width here
+                        HStack(alignment: .center, spacing: 25) {
+                            Image(.facebookLogo)
+                                .resizable()
+                                .frame(width: 32, height: 32)
+                            Text("Continue with Facebook")
+                                .font(.system(size: 20, weight: .bold, design: .default))
+                                .foregroundColor(Color.black)
+                        }
+                        .font(.system(size: 16))
+                        .foregroundColor(.blue)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.leading, 20)
+                    }
+                    .frame(minHeight: 50, maxHeight: 50)
                 }
                 HStack {
                     Text("Already Have a Account")
