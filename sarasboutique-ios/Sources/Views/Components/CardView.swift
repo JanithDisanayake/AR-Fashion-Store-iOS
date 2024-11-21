@@ -44,9 +44,13 @@ struct CardView: View {
                             }) {
                                 Image(systemName: isFavorite ? "heart.fill" : "heart")
                                     .foregroundColor(isFavorite ? .red : .black) // Red for favorite, black outline otherwise
-                                    .background(.clear) // Optional: Add a white background for better visibility
+                                    .background(.white) // Optional: Add a white background for better visibility
+                                    .cornerRadius(50)
                                     .padding(3)
                             }
+                            .padding(1)
+                            .background(.white)
+                            .cornerRadius(100)
                             
                             Button(action: {
                                 Task {
@@ -55,9 +59,13 @@ struct CardView: View {
                             }) {
                                 Image(systemName: "basket")
                                     .foregroundColor(.black) // Red for favorite, black outline otherwise
-                                    .background(.clear) // Optional: Add a white background for better visibility
+                                    .background(.white) // Optional: Add a white background for better visibility
+                                    .cornerRadius(50)
                                     .padding(3)
                             }
+                            .padding(1)
+                            .background(.white)
+                            .cornerRadius(100)
                         }
                         .padding(10)
                     }
@@ -95,7 +103,7 @@ struct CardView: View {
             }
         }
         .task {
-            let userId = "kt6kzM9eGfkCeq2TZhVq"
+            let userId = UserDataManager.shared.getCurrentUserID()
             let x = "desiredProductId"
             let items = await wishlistController.getAllWishlistItems(userId: userId)
             if let matchingItem = items.first(where: { $0.product.productId == product.productId }) {
@@ -112,17 +120,17 @@ struct CardView: View {
         print("is Fav: \(isFavorite)")
         if !isFavorite {
             isFavorite = true
-            let userId = "kt6kzM9eGfkCeq2TZhVq"
+            let userId = UserDataManager.shared.getCurrentUserID()
             _ = await wishlistController.addToWishList(userId: userId, product: product)
         } else {
             isFavorite = false
-            let userId = "kt6kzM9eGfkCeq2TZhVq"
+            let userId = UserDataManager.shared.getCurrentUserID()
             await wishlistController.removeItemFromWishlist(userId: userId, productId: product.productId!)
         }
     }
     
     func alterCart() async {
-        let userId = "kt6kzM9eGfkCeq2TZhVq"
+        let userId = UserDataManager.shared.getCurrentUserID()
         await cartController.addToCart(userId: userId, product: product)
     }
         

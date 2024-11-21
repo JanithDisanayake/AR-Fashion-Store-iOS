@@ -59,7 +59,9 @@ class CartController {
         var items: [CartItem] = []
         
         do {
-            let querySnapshot = try await db.collection("cart").getDocuments()
+            let querySnapshot = try await db.collection("cart")
+                .whereField("userId", isEqualTo: userId)
+                .getDocuments()
             
             for document in querySnapshot.documents {
                 let data = document.data()

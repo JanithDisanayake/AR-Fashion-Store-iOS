@@ -34,7 +34,11 @@ class UserDataManager {
 
         return User(userId: userId, firstName: firstName, lastName: lastName, email: email)
     }
-
+    
+    func getCurrentUserID() -> String {
+        let userId = UserDefaults.standard.string(forKey: userIdKey) ?? ""
+        return userId
+    }
 
     // Clear user data
     func clearUserData() {

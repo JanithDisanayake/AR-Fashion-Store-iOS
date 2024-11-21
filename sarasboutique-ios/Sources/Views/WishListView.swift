@@ -45,13 +45,13 @@ struct WishListView: View {
                     await fetchItems()
                 }
             }
-            .navigationTitle("Home")
+            .navigationTitle("Wish List")
             
         }
     }
     
     private func fetchItems() async {
-        let userId = "kt6kzM9eGfkCeq2TZhVq"
+        let userId = UserDataManager.shared.getCurrentUserID()
         items = await wishlistController.getAllWishlistItems(userId: userId)
     }
 }

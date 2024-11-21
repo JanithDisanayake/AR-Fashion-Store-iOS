@@ -58,7 +58,9 @@ class WishlistController {
         var items: [WishlistItem] = []
         
         do {
-            let querySnapshot = try await db.collection("wishlist").getDocuments()
+            let querySnapshot = try await db.collection("wishlist")
+                .whereField("userId", isEqualTo: userId)
+                .getDocuments()
             
             for document in querySnapshot.documents {
                 let data = document.data()

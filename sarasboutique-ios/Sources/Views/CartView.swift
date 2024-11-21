@@ -50,7 +50,7 @@ struct CartView: View {
     }
 
     private func fetchItems() async {
-        let userId = "kt6kzM9eGfkCeq2TZhVq" 
+        let userId = UserDataManager.shared.getCurrentUserID()
         items = await cartController.getAllItemsFromCart(userId: userId)
         //  print("Fetched items: \(items)")
     }
