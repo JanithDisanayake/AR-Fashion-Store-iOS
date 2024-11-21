@@ -80,7 +80,7 @@ struct sarasboutique_iosApp: App {
     
     var body: some Scene {
         WindowGroup {
-            LoginView()
+            ContentView()
                 .onOpenURL { url in
                     GIDSignIn.sharedInstance.handle(url)
                 }

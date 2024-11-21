@@ -19,7 +19,6 @@ struct LoginView: View {
     @State var errorMessage: String?
     @StateObject private var authViewModel = AuthenticationViewModel()
     @StateObject private var authController = AuthController()
-    @State var notificationController = NotificationController()
 
     
     var body: some View {
