@@ -41,14 +41,19 @@ struct LoginView: View {
                     .background(.ultraThinMaterial)
                     .shadow(radius: 5)
                     .cornerRadius(10.0)
-                Text("Forgot Password ?")
-                    .font(.system(size: 16))
-                    .foregroundColor(.blue)
-                    .frame(maxWidth: .infinity, alignment: .trailing)
-                    .padding(.leading, 20)
-                    .font(.system(size: 16))
-                    .foregroundColor(.blue)
-                    .frame(maxWidth: .infinity, alignment: .trailing)
+                NavigationLink (
+                    destination: ForgotPasswordView()
+                        .navigationBarBackButtonHidden(true)
+                ) {
+                    Text("Forgot Password ?")
+                        .font(.system(size: 16))
+                        .foregroundColor(.blue)
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                        .padding(.leading, 20)
+                        .font(.system(size: 16))
+                        .foregroundColor(.blue)
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                }
                 Spacer()
                     .frame(height:30)
                 
