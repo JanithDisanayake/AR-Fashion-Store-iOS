@@ -8,9 +8,16 @@
 import SwiftUI
 
 struct ProfileView: View {
+    @State private var userData = User(
+        userId: "",
+        firstName: "",
+        lastName: "",
+        email: ""
+    ) 
+
+    
     var body: some View {
         ZStack() {
-            Group {
                 //            ZStack() {
                 //              Rectangle()
                 //                .foregroundColor(.clear)
@@ -34,18 +41,18 @@ struct ProfileView: View {
                         .frame(width: 440, height: 285)
                         .background(Color(red: 0, green: 0.07, blue: 0.24))
                         .offset(x: 0, y: -285.50)
-                    Rectangle()
-                        .foregroundColor(.clear)
-                        .frame(width: 40, height: 40)
-                        .background(Color(red: 1, green: 0.99, blue: 0.99))
-                        .cornerRadius(50)
-                        .offset(x: -164, y: -370)
-                    Rectangle()
-                        .foregroundColor(.clear)
-                        .frame(width: 40, height: 40)
-                        .background(Color(red: 0.85, green: 0.85, blue: 0.85).opacity(0))
-                        .cornerRadius(50)
-                        .offset(x: 163, y: -370)
+//                    Rectangle()
+//                        .foregroundColor(.clear)
+//                        .frame(width: 40, height: 40)
+//                        .background(Color(red: 1, green: 0.99, blue: 0.99))
+//                        .cornerRadius(50)
+//                        .offset(x: -164, y: -370)
+//                    Rectangle()
+//                        .foregroundColor(.clear)
+//                        .frame(width: 40, height: 40)
+//                        .background(Color(red: 0.85, green: 0.85, blue: 0.85).opacity(0))
+//                        .cornerRadius(50)
+//                        .offset(x: 163, y: -370)
                     HStack(alignment: .top, spacing: 10) {
                         ZStack() {
                             ZStack() {
@@ -97,16 +104,16 @@ struct ProfileView: View {
                 .background(.white)
                 .offset(x: 0, y: -50)
                 
-                Text("sidiyago")
+                Text("Welcome \(userData.firstName) !")
                     .font(Font.custom("Outfit", size: 20).weight(.medium))
                     .foregroundColor(Color(red: 1, green: 1, blue: 1).opacity(0.90))
                     .offset(x: -0.50, y: -370)
-                Rectangle()
-                    .foregroundColor(.clear)
-                    .frame(width: 40, height: 40)
-                    .background(Color(red: 1, green: 0.99, blue: 0.99))
-                    .cornerRadius(50)
-                    .offset(x: 163, y: -420)
+//                Rectangle()
+//                    .foregroundColor(.clear)
+//                    .frame(width: 40, height: 40)
+//                    .background(Color(red: 1, green: 0.99, blue: 0.99))
+//                    .cornerRadius(50)
+//                    .offset(x: 163, y: -420)
                 Ellipse()
                     .foregroundColor(.clear)
                     .frame(width: 209.33, height: 200)
@@ -137,7 +144,7 @@ struct ProfileView: View {
                                 .frame(maxWidth: 100, alignment: .leading)
                                 .padding()
                             
-                            Text("Sid Diyago")
+                            Text("\(userData.firstName) \(userData.lastName)")
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .padding()
                                 .cornerRadius(8)
@@ -148,7 +155,7 @@ struct ProfileView: View {
                                 .frame(maxWidth: 100, alignment: .leading)
                                 .padding()
                             
-                            Text("siddxd@growthx.com")
+                            Text("\(userData.email)")
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .padding()
                                 .cornerRadius(8)
@@ -275,14 +282,20 @@ struct ProfileView: View {
                 .offset(x: -0.50, y: 150)
                 .frame(width: 400, height: .infinity)
                 
-                
-            }
+              
             
         }
         .frame(width: 440, height: .infinity)
         .background(.white)
-        
-        
+        .onAppear() {
+            userData = UserDataManager.shared.getUserData()
+            
+            print("User Data:")
+            print("User ID: \(userData.userId)")
+            print("First Name: \(userData.firstName)")
+            print("Last Name: \(userData.lastName)")
+            print("Email: \(userData.email)")
+        }
     }
 }
 

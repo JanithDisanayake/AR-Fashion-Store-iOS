@@ -14,6 +14,8 @@ class AuthController : ObservableObject {
     private let userController = UserController()
     
     func handleSignInButton(completion: @escaping (Bool) -> Void) {
+        var userObj : User?
+        
         guard let presentingViewController = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first?.rootViewController else {
             completion(false)
             return
@@ -21,13 +23,24 @@ class AuthController : ObservableObject {
         
         GIDSignIn.sharedInstance.signIn(withPresenting: presentingViewController) { signInResult, error in
             if let result = signInResult {
-                print("Sign In")
-                // Call the completion handler with true to indicate success
+                if let userProfile = result.user.profile {
+                    let email = result.user.profile?.email ?? "No email"
+                    self.userController.getUserByEmail(email: email) { user in
+                        if user.userId.isEmpty {
+                            completion(false)
+                            print("No user found.")
+                        } else {
+                            userObj = user
+                            print("User retrieved: \(user.firstName) \(user.lastName), ID: \(user.userId), Email: \(user.email)")
+                            UserDataManager.shared.saveUser(user: userObj ?? user)
+                        }
+                    }
+                }
+                print("Sign In \(userObj)")
                 completion(true)
+                
             } else {
-                // Inspect error if needed
                 print("Error during sign in:", error?.localizedDescription ?? "Unknown error")
-                // Call the completion handler with false to indicate failure
                 completion(false)
             }
         }
