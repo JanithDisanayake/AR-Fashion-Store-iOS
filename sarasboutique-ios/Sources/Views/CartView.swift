@@ -21,6 +21,14 @@ struct CartView: View {
     @State private var items: [CartItem] = []
     private let cartController = CartController()
 
+    var total: Double {
+        let totalInCents = items.map { item in
+            item.product.price * item.quantity
+        }.reduce(0, +)
+        
+        return Double(totalInCents) / 100 // Convert to dollars
+    }
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -30,6 +38,16 @@ struct CartView: View {
                     }
                 }
 
+                HStack {
+                    Text("Total")
+                        .frame(width: .infinity, alignment: .leading)
+                        .font(.system(size: 24, weight: .semibold)) 
+                    Spacer()
+                    Text("$\(total, specifier: "%.2f")")
+                        .font(.system(size: 24, weight: .bold))
+                }
+                .padding()
+                
                 Button(action: {
                     print("Checkout tapped")
                 }) {
