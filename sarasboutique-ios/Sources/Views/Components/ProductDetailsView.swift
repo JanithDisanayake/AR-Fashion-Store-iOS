@@ -11,6 +11,8 @@ struct ProductDetailsView: View {
     let product: Product
     @State var isPresented: Bool = false
     
+    let cartController = CartController()
+    
     
     var body: some View {
         VStack() {
@@ -121,9 +123,15 @@ struct ProductDetailsView: View {
                         .background(Color(red: 0.89, green: 0.93, blue: 1))
                         .offset(x: 0, y: 0)
                         .cornerRadius(50)
-                    Image(systemName: "cart.fill")
+                    Image(systemName: "basket.fill")
                 }
                 .frame(width: 55, height: 55)
+                .onTapGesture {
+                    Task{
+                        let userId = UserDataManager.shared.getCurrentUserID()
+                        await cartController.addToCart(userId: userId, product: product)
+                    }
+                }
                 
                 ZStack() {
                     Rectangle()

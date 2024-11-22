@@ -10,6 +10,7 @@ import SwiftUI
 struct CardView: View {
     let product: Product
     @State private var isFavorite = false
+    @State private var inCart = false
     
     private let wishlistController = WishlistController()
     private let productController = ProductController()
@@ -57,8 +58,8 @@ struct CardView: View {
                                     await alterCart()
                                 }
                             }) {
-                                Image(systemName: "basket")
-                                    .foregroundColor(.black) // Red for favorite, black outline otherwise
+                                Image(systemName: inCart ? "basket.fill" : "basket")
+                                    .foregroundColor(inCart ? .blue : .black) // Red for favorite, black outline otherwise
                                     .background(.white) // Optional: Add a white background for better visibility
                                     .cornerRadius(50)
                                     .padding(3)
@@ -111,6 +112,15 @@ struct CardView: View {
                 // print("Favourite item: \(matchingItem.product.name)")
             } else {
                 isFavorite = false
+                // print("Not a Favourite item")
+            }
+            
+            let cartItems = await cartController.getAllItemsFromCart(userId: userId)
+            if let cartItem = items.first(where: { $0.product.productId == product.productId }) {
+                inCart = true
+                // print("Favourite item: \(matchingItem.product.name)")
+            } else {
+                inCart = false
                 // print("Not a Favourite item")
             }
         }
