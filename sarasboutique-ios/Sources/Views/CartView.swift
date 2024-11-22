@@ -43,6 +43,10 @@ struct CartView: View {
                         body: "Thank you for checking out with us!",
                         delay: 1
                     )
+                    Task {
+                        let userId = UserDataManager.shared.getCurrentUserID()
+                        await cartController.removeAllItemsFromCart(userId: userId)
+                    }
                 }) {
                     Text("Checkout")
                         .frame(maxWidth: .infinity)

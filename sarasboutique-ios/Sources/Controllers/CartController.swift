@@ -163,5 +163,31 @@ class CartController {
             return false
         }
     }
+    
+    func removeAllItemsFromCart(userId: String) async {
+        let cartRef = db.collection("cart")
+        
+        do {
+            let querySnapshot = try await cartRef
+                .whereField("userId", isEqualTo: userId)
+                .getDocuments()
+            
+            for document in querySnapshot.documents {
+                do {
+                    try await document.reference.delete()
+                    print("Item removed from cart.")
+                } catch {
+                    print("Error removing item from cart: \(error.localizedDescription)")
+                }
+            }
+            
+            if querySnapshot.documents.isEmpty {
+                print("No items found in the cart for the given userId.")
+            }
+        } catch {
+            print("Error retrieving cart items: \(error.localizedDescription)")
+        }
+    }
+
 
 }
