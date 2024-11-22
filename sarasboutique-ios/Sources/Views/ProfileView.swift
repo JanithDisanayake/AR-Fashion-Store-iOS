@@ -224,7 +224,7 @@ struct ProfileView: View {
                                     color: Color(red: 0, green: 0, blue: 0, opacity: 0.10), radius: 1.16, y: 1.16
                                 )
                             }
-                            .padding(50)
+                            .padding(30)
                             
                             
                             Button(action: {

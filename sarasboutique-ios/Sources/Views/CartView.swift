@@ -7,20 +7,9 @@
 
 import SwiftUI
 
-struct CartItem2: Identifiable {
-    let id = UUID()
-    let name: String
-    let description: String
-    let imageName: String
-    let price: Double
-    let color: Color
-    let count: Int
-}
-
 struct CartView: View {
     @State private var items: [CartItem] = []
     private let cartController = CartController()
-
     var total: Double {
         let totalInCents = items.map { item in
             item.product.price * item.quantity
@@ -37,11 +26,11 @@ struct CartView: View {
                         CartItemView(item: items[index])
                     }
                 }
-
+                
                 HStack {
                     Text("Total")
                         .frame(width: .infinity, alignment: .leading)
-                        .font(.system(size: 24, weight: .semibold)) 
+                        .font(.system(size: 24, weight: .semibold))
                     Spacer()
                     Text("$\(total, specifier: "%.2f")")
                         .font(.system(size: 24, weight: .bold))
@@ -49,7 +38,11 @@ struct CartView: View {
                 .padding()
                 
                 Button(action: {
-                    print("Checkout tapped")
+                    NotificationManager.shared.scheduleNotification(
+                        title: "Thank You",
+                        body: "Thank you for checking out with us!",
+                        delay: 1
+                    )
                 }) {
                     Text("Checkout")
                         .frame(maxWidth: .infinity)

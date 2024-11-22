@@ -11,35 +11,46 @@ struct HomeView: View {
     @State private var products: [Product] = []
     @State private var isLoading: Bool = false
     @State private var errorMessage: String?
+    @State private var searchText = ""
     
     private let productController = ProductController()
     
     var body: some View {
         NavigationView {
-            ScrollView {
-                VStack(spacing: 10) {
-                    ForEach(0..<products.count / 2, id: \.self) { index in
-                        HStack(spacing: 25) {
-                            CardView(product: products[index * 2])
-                            if (index * 2 + 1) < products.count {
-                                CardView(product: products[index * 2 + 1])
+            VStack {
+                SearchBar(text: $searchText)
+                
+                ScrollView {
+                    VStack(spacing: 10) {
+                        // Filter products based on search text
+                        let filteredProducts = products.filter { product in
+                            searchText.isEmpty || product.name.lowercased().contains(searchText.lowercased())
+                        }
+                        
+                        // Display the filtered products
+                        ForEach(0..<filteredProducts.count / 2, id: \.self) { index in
+                            HStack(spacing: 25) {
+                                CardView(product: filteredProducts[index * 2])
+                                if (index * 2 + 1) < filteredProducts.count {
+                                    CardView(product: filteredProducts[index * 2 + 1])
+                                }
+                            }
+                        }
+                        
+                        if filteredProducts.count % 2 != 0 {
+                            HStack {
+                                CardView(product: filteredProducts.last!)
                             }
                         }
                     }
-                    if products.count % 2 != 0 {
-                        HStack {
-                            CardView(product: products.last!)
-                        }
+                    .padding()
+                    .padding(.horizontal, 50)
+                    .task {
+                        await fetchProducts()
                     }
                 }
-                .padding()
-                .padding(.horizontal, 50)
-                .task {
-                    await fetchProducts()
-                }
+                .navigationTitle("Home")
             }
-            .navigationTitle("Home")
-            
         }
     }
     
@@ -51,6 +62,35 @@ struct HomeView: View {
             print("Error fetching products:", error)
         }
         
+    }
+}
+
+struct SearchBar: View {
+    @Binding var text: String
+    
+    var body: some View {
+        TextField("Search products...", text: $text)
+            .padding(10)
+            .background(Color(.systemGray6))
+            .cornerRadius(8)
+            .padding(.horizontal)
+            .foregroundColor(.black)
+            .autocapitalization(.none)
+            .disableAutocorrection(true)
+            .overlay(
+                HStack {
+                    Spacer()
+                    if !text.isEmpty {
+                        Button(action: {
+                            text = "" // Clear the search text
+                        }) {
+                            Image(systemName: "xmark.circle.fill")
+                                .foregroundColor(.gray)
+                        }
+                    }
+                }
+                .padding(.trailing)
+            )
     }
 }
 
